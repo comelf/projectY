@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#E6E9EE">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/fav_video_list_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:text="동영상"
+                android:textColor="#FFFFFF"
+                android:background="#ED5565"/>
+
+            <Button
+                android:id="@+id/fav_play_list_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:text="재생목록"
+                android:textColor="#000000"
+                android:background="#F5F7FA"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/favorite_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp">
+            <!--android:background="#E6E9EE"-->
+
+        </ListView>
+
+    </LinearLayout>
+</LinearLayout>

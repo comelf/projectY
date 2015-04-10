@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/video_thumbnail_i"
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:scaleType="fitXY"
+            android:background="#000000"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:background="#000000"
+            android:alpha="0.8"
+            android:layout_alignParentTop="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/playButton"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="fitXY"
+
+
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/button_play_off"/>
+                <ImageButton
+                    android:id="@+id/likeButton"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="fitXY"
+
+
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/button_like_off"/>
+                <ImageButton
+                    android:id="@+id/favoriteButton"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="fitXY"
+
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/button_favorite_off"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/video_title_i"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="꿀재미 게스트!![위험한 초대:금칙어 게임#도타편] 마인크래프트 MineCraft"
+                android:gravity="center"
+                android:lines="2"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/video_date_i"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="2015.01.01"
+                    android:textAlignment="center"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="15dp">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:scaleType="fitXY"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_play_wht"
+                        android:layout_gravity="center_vertical"/>
+                    <TextView
+                        android:id="@+id/video_play_i"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textSize="12dp"
+                        android:background="@android:color/transparent"
+                        android:text="999만"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="15dp">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:scaleType="fitXY"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_like_wht"
+                        android:layout_gravity="center_vertical"/>
+                    <TextView
+                        android:id="@+id/video_like_i"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textSize="12dp"
+                        android:background="@android:color/transparent"
+                        android:text="999만"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#000000"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6E9EE">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:text="베스트 댓글"
+                android:textColor="#FFFFFF"
+                android:background="#ED5565"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:text="전체 댓글"
+                android:textColor="#000000"
+                android:background="#F5F7FA"/>
+            </LinearLayout>
+
+        <ListView
+            android:id="@+id/commentsListview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            android:paddingBottom="50dp"
+            android:paddingTop="46dp"
+            android:divider="@null"
+            android:layout_weight="1">
+            <!--android:background="#E6E9EE"-->
+
+            </ListView>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="12dp"
+            android:background="#ffffff">
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_alignParentLeft="true"
+                android:alpha="0.85"
+                android:background="@drawable/ic_comment"/>
+
+
+            <EditText
+                android:layout_marginRight="70dp"
+                android:layout_marginLeft="41dp"
+                android:gravity="center"
+
+                android:textColor="#48CFAD"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColorHint="#48CFAD"
+                android:textSize="15dp"
+                android:hint="베스트 댓글에 도전해보세요!"
+                />
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:background="#ffffff"
+                android:textColor="#999999"
+                android:text="등록"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+</LinearLayout>
