@@ -51,12 +51,15 @@ public abstract class GetHomeCoverlistAsyncTask extends AsyncTask<String, Void, 
             return null;
         }
 
+        if(video_list.isEmpty()){
+            return null;
+        }
+
         String url  = YOUTUBE_PLAYLISTITEMS_URL+video_list+"&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
 
 
         final String result = doGetUrl(url);
         if (result == null) {
-//            Log.e(TAG, "Failed to get playlist");
             return null;
         }
 

@@ -29,11 +29,6 @@ public abstract class GetRecommandlistAsyncTask extends AsyncTask<String, Void, 
     private static final String YOUTUBE_PLAYLIST_FIELDS = "etag,pageInfo,nextPageToken,items(id, snippet(title,position,publishedAt, thumbnails(medium,high),resourceId/videoId))";
 
 
-    public GetRecommandlistAsyncTask() {
-
-    }
-
-
     @Override
     protected JSONObject doInBackground(String... params) {
         Uri.Builder builder = Uri.parse(url).buildUpon();
@@ -56,7 +51,6 @@ public abstract class GetRecommandlistAsyncTask extends AsyncTask<String, Void, 
 
         final String result = doGetUrl(url);
         if (result == null) {
-//            Log.e(TAG, "Failed to get playlist");
             return null;
         }
 

@@ -44,21 +44,13 @@ public class VideoItemlist {
     }
 
     public VideoItemlistItem getItem(int position) {
-        int pageNumber = position / resultsPerPage;
-        Page page = pages.get(pageNumber);
+        if(resultsPerPage==0) {
+            return null;
+        }
+        Page page = pages.get(0);
 
-        return page.items.get(position % resultsPerPage);
+        return page.items.get(position);
     }
-
-
-
-    public String getEtag(int position) {
-        int pageNumber = position / resultsPerPage;
-        Page page = pages.get(pageNumber);
-
-        return page.eTag;
-    }
-
 
     public class Page {
         public final List<VideoItemlistItem> items;

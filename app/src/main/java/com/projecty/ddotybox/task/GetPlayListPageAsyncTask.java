@@ -57,7 +57,6 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
         Log.i(TAG, "Failed to get playlist");
         final String result = doGetUrl(mUriBuilder.build().toString());
         if (result == null) {
-//            Log.e(TAG, "Failed to get playlist");
             return null;
         }
         JSONObject jsonObject;

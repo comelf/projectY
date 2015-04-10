@@ -28,6 +28,7 @@ import com.projecty.ddotybox.fragment.BjLogFragment;
 import com.projecty.ddotybox.fragment.FavoriteFragment;
 import com.projecty.ddotybox.fragment.PlayListFragment;
 import com.projecty.ddotybox.fragment.RecommendFragment;
+import com.projecty.ddotybox.fragment.SandboxNetworkFragment;
 import com.projecty.ddotybox.fragment.SearchFragment;
 import com.projecty.ddotybox.fragment.SearchResultFragment;
 import com.projecty.ddotybox.fragment.SettingFragment;
@@ -233,6 +234,13 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         buttons.add((Button) findViewById(R.id.bjlogButton));
         buttons.add((Button) findViewById(R.id.communityButton));
         buttons.add((Button) findViewById(R.id.playlistButton));
+        buttons.add((Button) findViewById(R.id.bj1));
+        buttons.add((Button) findViewById(R.id.bj2));
+        buttons.add((Button) findViewById(R.id.bj3));
+        buttons.add((Button) findViewById(R.id.bj4));
+        buttons.add((Button) findViewById(R.id.bj5));
+        buttons.add((Button) findViewById(R.id.bj6));
+        buttons.add((Button) findViewById(R.id.bj7));
 
         Typeface font = Typeface.createFromAsset(getAssets(), "NotoSans.otf");
         for(Button btn : buttons){
@@ -308,6 +316,16 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //                        .commit();
 
                 break;
+            case R.id.bj1:
+                toolbar.setTitle("잠뜰 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr = new SandboxNetworkFragment();
+                fr.setSandboxId("sleepground");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr)
+                        .commit();
+                break;
+
 
         }
         dlDrawer.closeDrawer(drawer);
