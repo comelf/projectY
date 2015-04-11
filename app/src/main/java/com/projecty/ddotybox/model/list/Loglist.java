@@ -1,4 +1,6 @@
-package com.projecty.ddotybox.model;
+package com.projecty.ddotybox.model.list;
+
+import com.projecty.ddotybox.model.base.BjLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;

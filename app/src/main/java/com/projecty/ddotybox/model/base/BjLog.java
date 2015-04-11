@@ -1,4 +1,4 @@
-package com.projecty.ddotybox.model;
+package com.projecty.ddotybox.model.base;
 
 import java.util.Date;
 

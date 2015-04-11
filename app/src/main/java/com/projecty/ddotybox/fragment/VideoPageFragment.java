@@ -4,26 +4,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.VideolistItem;
+import com.projecty.ddotybox.adapter.CommentslistAdapter;
+import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.squareup.picasso.Picasso;
 
 public class VideoPageFragment extends Fragment implements View.OnClickListener{
     ListView mListView;
     private CommentslistAdapter mAdapter;
-    private VideolistItem item;
+    private StatisticsItem item;
 
-    public void setItem(VideolistItem item){
+    public void setItem(StatisticsItem item){
         this.item = item;
     }
 
@@ -63,17 +62,7 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initListAdapter(String jsonData) {
-        mAdapter = new CommentslistAdapter(jsonData);
-
-        if(mListView==null){
-            Log.v("DEBUG", "LIST View IS NULL!!");
-        }
-
-        if(mAdapter==null){
-            Log.v("DEBUG", "Adapter IS NULL!!");
-        }
-
-
+        mAdapter = new CommentslistAdapter(jsonData,getLayoutInflater(null));
         mListView.setAdapter(mAdapter);
     }
 
@@ -88,62 +77,6 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
             case R.id.favoriteButton:
 
                 break;
-        }
-    }
-
-
-    private class CommentslistAdapter extends BaseAdapter {
-        private final LayoutInflater mInflater;
-        private ViewHolder viewHolder;
-
-        public CommentslistAdapter(String jsonData) {
-            mInflater = getLayoutInflater(null);
-
-            //JSON 파싱!
-        }
-
-        @Override
-        public int getCount() {
-            return 10;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-//            if ( position == (getCount() - 1)) {
-//                return mInflater.inflate(R.layout.comment_card, null, false);
-//            }
-
-            if (convertView == null || convertView.getTag() == null) {
-                viewHolder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.comment_card, null, false);
-                viewHolder.detail = (TextView) convertView.findViewById(R.id.comment_detail);
-
-                convertView.setTag(viewHolder);
-
-                viewHolder.detail.setText("댓글댓글 댓글댓글 댓글댓글 댓글댓글 댓글댓글");
-            }
-
-            viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.detail.setText("댓글댓글 댓글댓글 댓글댓글 댓글댓글 댓글댓글2");
-
-
-            return convertView;
-        }
-
-        private class ViewHolder {
-
-            public TextView detail;
         }
     }
 }

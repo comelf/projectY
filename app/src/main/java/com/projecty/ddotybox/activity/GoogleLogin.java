@@ -125,6 +125,7 @@ public class GoogleLogin extends Activity implements OnClickListener,
         mSignInClicked = false;
         Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
+
         // Get user's information
         getProfileInformation();
         Intent intent = new Intent(this, HomeActivity.class);
@@ -138,6 +139,8 @@ public class GoogleLogin extends Activity implements OnClickListener,
      * */
     private void getProfileInformation() {
         try {
+
+
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                 Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(mGoogleApiClient);

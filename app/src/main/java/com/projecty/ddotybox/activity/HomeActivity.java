@@ -320,7 +320,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 toolbar.setTitle("잠뜰 BOX");
                 setLayoutBackgroundColor(PLAYLIST_LAYOUT);
                 SandboxNetworkFragment fr = new SandboxNetworkFragment();
-                fr.setSandboxId("sleepground");
+//                fr.setSandboxId("sleepground");
+                fr.setSandboxId("snippet");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container,fr)
                         .commit();

@@ -23,8 +23,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.VideoItemlist;
-import com.projecty.ddotybox.model.VideoItemlistItem;
+import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.VideoItemlist;
 import com.projecty.ddotybox.task.GetHomeCoverlistAsyncTask;
 import com.projecty.ddotybox.task.GetRecommandlistAsyncTask;
 import com.projecty.ddotybox.util.CustomViewPagerAdapter;
@@ -93,7 +93,7 @@ public class RecommendFragment extends Fragment {
                 TextView play = (TextView) v.findViewById(R.id.content_playButton);
 
 
-                VideoItemlistItem item = rVideolist.getItem(position);
+                StatisticsItem item = rVideolist.getItem(position);
 
 
                 date.setText(item.date);
@@ -219,8 +219,8 @@ public class RecommendFragment extends Fragment {
 
     }
 
-    private VideoItemlistItem getItem(int position) {
-        return mVideolist.getItem(position-1);
+    private StatisticsItem getItem(int position) {
+        return rVideolist.getItem(position);
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -326,7 +326,7 @@ public class RecommendFragment extends Fragment {
         }
 
         @Override
-        public VideoItemlistItem getItem(int i) {
+        public StatisticsItem getItem(int i) {
             return mVideolist.getItem(i );
         }
 
@@ -369,7 +369,7 @@ public class RecommendFragment extends Fragment {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final VideoItemlistItem item = getItem(position);
+            final StatisticsItem item = getItem(position);
             Typeface custom_font = Typeface.createFromAsset(convertView.getContext().getAssets(), "NotoSans.otf");
             viewHolder.title.setTypeface(custom_font);
 

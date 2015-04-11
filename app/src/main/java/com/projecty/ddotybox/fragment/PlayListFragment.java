@@ -21,8 +21,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.PlaylistIist;
-import com.projecty.ddotybox.model.PlaylistItem;
+import com.projecty.ddotybox.model.base.PlayItem;
+import com.projecty.ddotybox.model.list.PlaylistOri;
 import com.projecty.ddotybox.task.GetPlaylistAsyncTask;
 import com.squareup.picasso.Picasso;
 
@@ -39,7 +39,7 @@ public class PlayListFragment extends Fragment {
     private static final String YOUTUBE_PLAYLIST = "UChQ-VMvdGrYZxviQVMTJOHg";
     private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
-    private PlaylistIist mPlaylist;
+    private PlaylistOri mPlaylist;
     private EtagCache mEtagCache;
     private PlaylistAdapter mAdapter;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
@@ -54,7 +54,7 @@ public class PlayListFragment extends Fragment {
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mPlaylist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), PlaylistIist.class);
+            mPlaylist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), PlaylistOri.class);
         }
 
         // ensure the adapter and listview are initialized
@@ -111,7 +111,7 @@ public class PlayListFragment extends Fragment {
         return (int) (dimensionDp * density + 0.5f);
     }
 
-    private void initListAdapter(PlaylistIist playlist) {
+    private void initListAdapter(PlaylistOri playlist) {
         mAdapter = new PlaylistAdapter(playlist);
         mListView.setAdapter(mAdapter);
     }
@@ -119,7 +119,7 @@ public class PlayListFragment extends Fragment {
     private void handlePlaylistResult(JSONObject result) {
         try {
             if (mPlaylist == null) {
-                mPlaylist = new PlaylistIist(result);
+                mPlaylist = new PlaylistOri(result);
                 initListAdapter(mPlaylist);
             } else {
                 mPlaylist.addPage(result);
@@ -137,10 +137,10 @@ public class PlayListFragment extends Fragment {
 
     private class PlaylistAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
-        private PlaylistIist mPlaylist;
+        private PlaylistOri mPlaylist;
         private boolean mIsLoading = false;
 
-        PlaylistAdapter(PlaylistIist playlist) {
+        PlaylistAdapter(PlaylistOri playlist) {
             mPlaylist = playlist;
             mInflater = getLayoutInflater(null);
         }
@@ -161,7 +161,7 @@ public class PlayListFragment extends Fragment {
         }
 
         @Override
-        public PlaylistItem getItem(int i) {
+        public PlayItem getItem(int i) {
             return mPlaylist.getItem(i);
         }
 
@@ -208,7 +208,7 @@ public class PlayListFragment extends Fragment {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final PlaylistItem item = getItem(position);
+            final PlayItem item = getItem(position);
 
             Typeface custom_font = Typeface.createFromAsset(convertView.getContext().getAssets(), "NotoSans.otf");
             viewHolder.title.setTypeface(custom_font);

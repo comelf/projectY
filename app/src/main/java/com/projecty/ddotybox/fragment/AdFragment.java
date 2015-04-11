@@ -15,9 +15,8 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.etag.EtagCache;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.VideoItemlist;
-import com.projecty.ddotybox.model.Videolist;
-import com.projecty.ddotybox.model.VideolistItem;
+import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.HomeVideolist;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
 import com.projecty.ddotybox.util.CustomListView;
 import com.squareup.picasso.Picasso;
@@ -38,8 +37,8 @@ public class AdFragment extends Fragment {
     private EtagCache mEtagCache;
     private CustomListView listView;
     private PlaylistAdapter mAdapter;
-    private Videolist mVideolist;
-    private VideoItemlist rVideolist;
+    private HomeVideolist mHomeVideolist;
+    private HomeVideolist rVideolist;
     private AsyncTask asyncOne;
     private AsyncTask asyncTwo;
     ///Async 처리 해야됨!!!!!!
@@ -52,8 +51,8 @@ public class AdFragment extends Fragment {
         View root = inflater.inflate(R.layout.custom_list_view, container, false);
         listView = (CustomListView) root.findViewById(R.id.custom_list_v);
 
-        if (mVideolist != null) {
-            initListAdapter(mVideolist);
+        if (mHomeVideolist != null) {
+            initListAdapter(mHomeVideolist);
         }
 
         asyncOne = new GetVideolistAsyncTask() {
@@ -75,11 +74,11 @@ public class AdFragment extends Fragment {
 
     private void handlePlaylistResult(JSONObject result) {
         try {
-            if (mVideolist == null) {
-                mVideolist = new Videolist(result);
-                initListAdapter(mVideolist);
+            if (mHomeVideolist == null) {
+                mHomeVideolist = new HomeVideolist(result);
+                initListAdapter(mHomeVideolist);
             } else {
-                mVideolist.addPage(result);
+                mHomeVideolist.addPage(result);
             }
 
             if (!mAdapter.setIsLoading(false)) {
@@ -95,8 +94,8 @@ public class AdFragment extends Fragment {
     private void handleRecommendlistResult(JSONObject result) {
         try {
             if (rVideolist == null) {
-                rVideolist = new VideoItemlist(result);
-                initListAdapter(mVideolist);
+                rVideolist = new HomeVideolist(result);
+                initListAdapter(mHomeVideolist);
             } else {
                 rVideolist.addPage(result);
             }
@@ -110,8 +109,8 @@ public class AdFragment extends Fragment {
         }
     }
 
-    private void initListAdapter(Videolist videolist) {
-        mAdapter = new PlaylistAdapter(videolist);
+    private void initListAdapter(HomeVideolist homeVideolist) {
+        mAdapter = new PlaylistAdapter(homeVideolist);
         listView.setAdapter(mAdapter);
     }
 
@@ -134,11 +133,11 @@ public class AdFragment extends Fragment {
 
     protected class PlaylistAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
-        private Videolist mVideolist;
+        private HomeVideolist mHomeVideolist;
         private boolean mIsLoading = false;
 
-        PlaylistAdapter(Videolist Videolist) {
-            mVideolist = Videolist;
+        PlaylistAdapter(HomeVideolist HomeVideolist) {
+            mHomeVideolist = HomeVideolist;
             mInflater = getLayoutInflater(null);
         }
 
@@ -154,12 +153,12 @@ public class AdFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return mVideolist.getCount() + (mIsLoading ? 1 : 0);
+            return mHomeVideolist.getCount() + (mIsLoading ? 1 : 0);
         }
 
         @Override
-        public VideolistItem getItem(int i) {
-            return mVideolist.getItem(i);
+        public StatisticsItem getItem(int i) {
+            return mHomeVideolist.getItem(i);
         }
 
         @Override
@@ -201,7 +200,7 @@ public class AdFragment extends Fragment {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final VideolistItem item = getItem(position);
+            final StatisticsItem item = getItem(position);
 
 
             viewHolder.title.setText(item.title);
@@ -223,7 +222,7 @@ public class AdFragment extends Fragment {
                 }
             });
 
-            final String nextPageToken = mVideolist.getNextPageToken(position);
+            final String nextPageToken = mHomeVideolist.getNextPageToken(position);
             if (!isEmpty(nextPageToken) && position == getCount() - 1) {
                 new GetVideolistAsyncTask() {
                     @Override

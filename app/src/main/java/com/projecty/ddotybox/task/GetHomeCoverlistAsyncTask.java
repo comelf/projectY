@@ -23,10 +23,7 @@ public abstract class GetHomeCoverlistAsyncTask extends AsyncTask<String, Void, 
     private static final String TAG = "GetRecommandlistAsyncTask";
 
     private String url = "http://52.68.56.175/get_homecover";
-    private static final int YOUTUBE_PLAYLIST_MAX_RESULTS = 10;
     private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=";
-    private static final String YOUTUBE_PLAYLIST_PART = "snippet";
-    private static final String YOUTUBE_PLAYLIST_FIELDS = "etag,pageInfo,nextPageToken,items(id, snippet(title,position,publishedAt, thumbnails(medium,high),resourceId/videoId))";
 
 
     public GetHomeCoverlistAsyncTask() {

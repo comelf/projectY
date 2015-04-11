@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.github.kevinsawicki.etag.EtagCache;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.BjLog;
-import com.projecty.ddotybox.model.Loglist;
+import com.projecty.ddotybox.model.base.BjLog;
+import com.projecty.ddotybox.model.list.Loglist;
 import com.projecty.ddotybox.task.GetBjLogAsyncTask;
 import com.squareup.picasso.Picasso;
 

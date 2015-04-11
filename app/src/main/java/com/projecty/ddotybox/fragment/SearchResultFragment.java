@@ -23,8 +23,8 @@ import com.github.kevinsawicki.etag.EtagCache;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.SearchVideolist;
-import com.projecty.ddotybox.model.SearchVideolistItem;
+import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.SearchVideolist;
 import com.projecty.ddotybox.task.GetSearchlistAsyncTask;
 import com.squareup.picasso.Picasso;
 
@@ -171,7 +171,7 @@ public class SearchResultFragment extends Fragment {
         }
 
         @Override
-        public SearchVideolistItem getItem(int i) {
+        public StatisticsItem getItem(int i) {
             return mVideolist.getItem(i);
         }
 
@@ -214,7 +214,7 @@ public class SearchResultFragment extends Fragment {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final SearchVideolistItem item = getItem(position);
+            final StatisticsItem item = getItem(position);
 
             viewHolder.title.setText(item.title);
             viewHolder.date.setText(item.date);

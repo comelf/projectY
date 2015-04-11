@@ -1,18 +1,17 @@
 package com.projecty.ddotybox.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,9 +20,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.PlaylistIist;
-import com.projecty.ddotybox.model.PlaylistItem;
-import com.projecty.ddotybox.task.GetPlaylistAsyncTask;
+import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.CrewVideolist;
 import com.projecty.ddotybox.task.GetSandboxNetworkAsyncTask;
 import com.squareup.picasso.Picasso;
 
@@ -37,10 +35,10 @@ import java.util.List;
 
 public class SandboxNetworkFragment extends Fragment {
 
-    private static final String YOUTUBE_PLAYLIST = "UChQ-VMvdGrYZxviQVMTJOHg";
+    private static final String YOUTUBE_PLAYLIST = "UChQ-VMvAGrYZxviQVMTFOHg";
     private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
-    private PlaylistIist mPlaylist;
+    private CrewVideolist mPlaylist;
     private EtagCache mEtagCache;
     private PlaylistAdapter mAdapter;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
@@ -48,7 +46,7 @@ public class SandboxNetworkFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         Picasso.with(getActivity());
         View rootView = inflater.inflate(R.layout.playlist_fragment, container, false);
@@ -56,7 +54,7 @@ public class SandboxNetworkFragment extends Fragment {
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mPlaylist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), PlaylistIist.class);
+            mPlaylist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), CrewVideolist.class);
         }
 
         // ensure the adapter and listview are initialized
@@ -69,7 +67,7 @@ public class SandboxNetworkFragment extends Fragment {
         mAdView.loadAd(adRequest);
 
         // start loading the first page of our playlist
-        AsyncTask async = new GetSandboxNetworkAsyncTask() {
+        AsyncTask async = new GetSandboxNetworkAsyncTask(sandboxId) {
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -107,9 +105,9 @@ public class SandboxNetworkFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-       for (AsyncTask task : asyncTasks){
-           task.cancel(true);
-       }
+        for (AsyncTask task : asyncTasks){
+            task.cancel(true);
+        }
 
     }
 
@@ -118,7 +116,7 @@ public class SandboxNetworkFragment extends Fragment {
         return (int) (dimensionDp * density + 0.5f);
     }
 
-    private void initListAdapter(PlaylistIist playlist) {
+    private void initListAdapter(CrewVideolist playlist) {
         mAdapter = new PlaylistAdapter(playlist);
         mListView.setAdapter(mAdapter);
     }
@@ -126,7 +124,7 @@ public class SandboxNetworkFragment extends Fragment {
     private void handlePlaylistResult(JSONObject result) {
         try {
             if (mPlaylist == null) {
-                mPlaylist = new PlaylistIist(result);
+                mPlaylist = new CrewVideolist(result,sandboxId);
                 initListAdapter(mPlaylist);
             } else {
                 mPlaylist.addPage(result);
@@ -146,13 +144,13 @@ public class SandboxNetworkFragment extends Fragment {
         this.sandboxId = sandboxId;
     }
 
-    private class PlaylistAdapter extends BaseAdapter {
+    protected class PlaylistAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
-        private PlaylistIist mPlaylist;
+        private CrewVideolist mHomeVideolist;
         private boolean mIsLoading = false;
 
-        PlaylistAdapter(PlaylistIist playlist) {
-            mPlaylist = playlist;
+        PlaylistAdapter(CrewVideolist HomeVideolist) {
+            mHomeVideolist = HomeVideolist;
             mInflater = getLayoutInflater(null);
         }
 
@@ -168,12 +166,12 @@ public class SandboxNetworkFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return mPlaylist.getCount() + (mIsLoading ? 1 : 0);
+            return mHomeVideolist.getCount() + (mIsLoading ? 1 : 0);
         }
 
         @Override
-        public PlaylistItem getItem(int i) {
-            return mPlaylist.getItem(i);
+        public StatisticsItem getItem(int i) {
+            return mHomeVideolist.getItem(i);
         }
 
         @Override
@@ -181,56 +179,43 @@ public class SandboxNetworkFragment extends Fragment {
             return i;
         }
 
-        private void moveFragement(int position){
-            PlayListPageFragment fr = new PlayListPageFragment();
-            fr.setItem(getItem(position));
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
-            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-            fragmentTransaction.add(R.id.container, fr);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+        private void playWebView(int position){
+            StatisticsItem item =getItem(position);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + item.videoId)));
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup viewGroup) {
             ViewHolder viewHolder;
+
             if (mIsLoading && position == (getCount() - 1)) {
                 return mInflater.inflate(R.layout.youtube_video_list_item_loading, null, false);
             }
             if (convertView == null || convertView.getTag() == null) {
                 viewHolder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.youtube_play_list_item, null, false);
+                convertView = mInflater.inflate(R.layout.youtube_video_list_item, null, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.video_title);
                 viewHolder.date = (TextView) convertView.findViewById(R.id.video_date);
                 viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.video_thumbnail);
-                viewHolder.videoCount = (TextView) convertView.findViewById(R.id.left_box_count);
-                viewHolder.playButton = (TextView) convertView.findViewById(R.id.playButton);
-                viewHolder.likeButton = (TextView) convertView.findViewById(R.id.likeButton);
-                viewHolder.left_video = (TextView) convertView.findViewById(R.id.left_video_title);
-                LinearLayout l1 = (LinearLayout) convertView.findViewById(R.id.playLayout);
-                LinearLayout l2 = (LinearLayout) convertView.findViewById(R.id.likeLayout);
-//                l1.setVisibility(View.INVISIBLE);
-//                l2.setVisibility(View.INVISIBLE);
+                viewHolder.duration = (TextView) convertView.findViewById(R.id.duration);
+                viewHolder.viewCount = (TextView) convertView.findViewById(R.id.playButton);
+                viewHolder.likeCount = (TextView) convertView.findViewById(R.id.likeButton);
                 convertView.setTag(viewHolder);
 
             }
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final PlaylistItem item = getItem(position);
+            final StatisticsItem item = getItem(position);
+
+            viewHolder.title.setText(item.title);
+            viewHolder.date.setText(item.date);
+            viewHolder.duration.setText(item.duration);
+            viewHolder.viewCount.setText(item.viewCount);
+            viewHolder.likeCount.setText(item.likeCount);
 
             Typeface custom_font = Typeface.createFromAsset(convertView.getContext().getAssets(), "NotoSans.otf");
             viewHolder.title.setTypeface(custom_font);
-            viewHolder.videoCount.setTypeface(custom_font);
-            viewHolder.left_video.setTypeface(custom_font);
-            viewHolder.title.setText(item.title);
-            viewHolder.date.setText(item.date);
-            viewHolder.videoCount.setText(item.videoCount);
-            //viewHolder.playButton.setText(item.);
-
-
             Picasso.with(getActivity())
                     .load(item.thumbnailUrl)
                     .into(viewHolder.thumbnail);
@@ -240,27 +225,31 @@ public class SandboxNetworkFragment extends Fragment {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    moveFragement(position);
+                    playWebView(position);
                 }
             });
 
-            final String nextPageToken = mPlaylist.getNextPageToken(position);
+            final String nextPageToken = mHomeVideolist.getNextPageToken(position);
             if (!isEmpty(nextPageToken) && position == getCount() - 1) {
-                AsyncTask async = new GetPlaylistAsyncTask() {
-                    @Override
-                    public EtagCache getEtagCache() {
-                        return mEtagCache;
-                    }
+                AsyncTask async = new GetSandboxNetworkAsyncTask(sandboxId) {
+                            @Override
+                            public EtagCache getEtagCache() {
+                                return mEtagCache;
+                            }
 
-                    @Override
-                    public void onPostExecute(JSONObject result) {
-                        handlePlaylistResult(result);
-                    }
-                }.execute(YOUTUBE_PLAYLIST, nextPageToken);
+                            @Override
+                            public String getBjId() {
+                                return sandboxId;
+                            }
+
+                            @Override
+                            public void onPostExecute(JSONObject result) {
+                                handlePlaylistResult(result);
+                            }
+                        }.execute(YOUTUBE_PLAYLIST, null);
                 asyncTasks.add(async);
-                setIsLoading(true);
-            }
 
+            }
             return convertView;
         }
 
@@ -275,11 +264,10 @@ public class SandboxNetworkFragment extends Fragment {
             ImageView thumbnail;
             TextView title;
             TextView date;
-            TextView videoCount;
-            TextView playButton;
-            TextView likeButton;
-            TextView left_video;
-            LinearLayout left_box;
+            TextView duration;
+            TextView viewCount;
+            TextView likeCount;
+
         }
 
     }

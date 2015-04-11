@@ -21,10 +21,10 @@ import android.widget.TextView;
 import com.github.kevinsawicki.etag.EtagCache;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.PlaylistIistInFav;
-import com.projecty.ddotybox.model.PlaylistItem;
-import com.projecty.ddotybox.model.VideoItemlist;
-import com.projecty.ddotybox.model.VideoItemlistItem;
+import com.projecty.ddotybox.model.base.PlayItem;
+import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.PlaylistFav;
+import com.projecty.ddotybox.model.list.VideoItemlist;
 import com.projecty.ddotybox.task.GetFavoriteAsyncTask;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +44,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
     private EtagCache mEtagCache;
     private FavoriteAdapter mAdapter;
     private VideoItemlist mVideolist;
-    private PlaylistIistInFav pVideolist;
+    private PlaylistFav pVideolist;
     private AsyncTask aVideo;
     private AsyncTask aPlay;
 
@@ -98,7 +98,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void initPlayListAdapter(PlaylistIistInFav videolist) {
+    private void initPlayListAdapter(PlaylistFav videolist) {
         pVideolist = videolist;
         mAdapter = new FavoritePlaylistPageAdapter(videolist);
         mListView.setAdapter(mAdapter);
@@ -133,10 +133,10 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
             }
 
             if (pVideolist == null) {
-                pVideolist = new PlaylistIistInFav(result);
+                pVideolist = new PlaylistFav(result);
                 initPlayListAdapter(pVideolist);
             } else {
-                pVideolist = new PlaylistIistInFav(result);
+                pVideolist = new PlaylistFav(result);
                 initPlayListAdapter(pVideolist);
             }
 
@@ -232,7 +232,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public VideoItemlistItem getItem(int i) {
+        public StatisticsItem getItem(int i) {
             return mVideolist.getItem(i);
         }
 
@@ -277,7 +277,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final VideoItemlistItem item = getItem(position);
+            final StatisticsItem item = getItem(position);
 
             viewHolder.title.setText(item.title);
             viewHolder.date.setText(item.date);
@@ -341,10 +341,10 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
     private class FavoritePlaylistPageAdapter extends FavoriteAdapter {
         private final LayoutInflater mInflater;
-        private PlaylistIistInFav mPlaylist;
+        private PlaylistFav mPlaylist;
         private boolean mIsLoading = false;
 
-        FavoritePlaylistPageAdapter(PlaylistIistInFav playlist) {
+        FavoritePlaylistPageAdapter(PlaylistFav playlist) {
             mPlaylist = playlist;
             mInflater = getLayoutInflater(null);
         }
@@ -365,7 +365,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public PlaylistItem getItem(int i) {
+        public PlayItem getItem(int i) {
             return mPlaylist.getItem(i);
         }
 
@@ -409,7 +409,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final PlaylistItem item = getItem(position);
+            final PlayItem item = getItem(position);
 
             Typeface custom_font = Typeface.createFromAsset(convertView.getContext().getAssets(), "NotoSans.otf");
             viewHolder.title.setTypeface(custom_font);

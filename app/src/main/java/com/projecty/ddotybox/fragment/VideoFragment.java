@@ -23,10 +23,9 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.model.VideoItemlist;
-import com.projecty.ddotybox.model.VideoItemlistItem;
-import com.projecty.ddotybox.model.Videolist;
-import com.projecty.ddotybox.model.VideolistItem;
+import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.HomeVideolist;
+import com.projecty.ddotybox.model.list.VideoItemlist;
 import com.projecty.ddotybox.task.GetHomeCoverlistAsyncTask;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
 import com.projecty.ddotybox.util.CustomViewPagerAdapter;
@@ -46,7 +45,7 @@ public class VideoFragment extends Fragment {
     private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
     private EtagCache mEtagCache;
-    private Videolist mVideolist;
+    private HomeVideolist mHomeVideolist;
     private VideoItemlist rVideolist;
     private PlaylistAdapter mAdapter;
     private ViewPager mViewPager;
@@ -81,7 +80,10 @@ public class VideoFragment extends Fragment {
                 TextView like = (TextView) v.findViewById(R.id.content_likeButton);
                 TextView play = (TextView) v.findViewById(R.id.content_playButton);
 
-                VideoItemlistItem item = rVideolist.getItem(position);
+                StatisticsItem item = rVideolist.getItem(position);
+                if(item==null){
+                    return v;
+                }
 
                 date.setText(item.date);
                 like.setText(item.likeCount);
@@ -150,12 +152,12 @@ public class VideoFragment extends Fragment {
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mVideolist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), Videolist.class);
+            mHomeVideolist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), HomeVideolist.class);
         }
 
         // ensure the adapter and listview are initialized
-        if (mVideolist != null) {
-            initListAdapter(mVideolist);
+        if (mHomeVideolist != null) {
+            initListAdapter(mHomeVideolist);
         }
 
             // start loading the first page of our playlist
@@ -199,8 +201,8 @@ public class VideoFragment extends Fragment {
 
     }
 
-    private VideoItemlistItem getItem(int position) {
-        return rVideolist.getItem(position-1);
+    private StatisticsItem getItem(int position) {
+        return rVideolist.getItem(position);
     }
 
     private void handleRecommendlistResult(JSONObject result) {
@@ -210,7 +212,7 @@ public class VideoFragment extends Fragment {
             }
             if (rVideolist == null) {
                 rVideolist = new VideoItemlist(result);
-                initListAdapter(mVideolist);
+                initListAdapter(mHomeVideolist);
             } else {
                 rVideolist.addPage(result);
             }
@@ -226,7 +228,7 @@ public class VideoFragment extends Fragment {
 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        String json = new Gson().toJson(mVideolist);
+        String json = new Gson().toJson(mHomeVideolist);
         outState.putString(PLAYLIST_KEY, json);
     }
 
@@ -247,18 +249,18 @@ public class VideoFragment extends Fragment {
         }
 
     }
-    private void initListAdapter(Videolist Videolist) {
-        mAdapter = new PlaylistAdapter(Videolist);
+    private void initListAdapter(HomeVideolist HomeVideolist) {
+        mAdapter = new PlaylistAdapter(HomeVideolist);
         mListView.setAdapter(mAdapter);
     }
 
     private void handlePlaylistResult(JSONObject result) {
         try {
-            if (mVideolist == null) {
-                mVideolist = new Videolist(result);
-                initListAdapter(mVideolist);
+            if (mHomeVideolist == null) {
+                mHomeVideolist = new HomeVideolist(result);
+                initListAdapter(mHomeVideolist);
             } else {
-                mVideolist.addPage(result);
+                mHomeVideolist.addPage(result);
             }
 
             if (!mAdapter.setIsLoading(false)) {
@@ -278,11 +280,11 @@ public class VideoFragment extends Fragment {
 
     protected class PlaylistAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
-        private Videolist mVideolist;
+        private HomeVideolist mHomeVideolist;
         private boolean mIsLoading = false;
 
-        PlaylistAdapter(Videolist Videolist) {
-            mVideolist = Videolist;
+        PlaylistAdapter(HomeVideolist HomeVideolist) {
+            mHomeVideolist = HomeVideolist;
             mInflater = getLayoutInflater(null);
         }
 
@@ -298,12 +300,12 @@ public class VideoFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return mVideolist.getCount() + (mIsLoading ? 1 : 0);
+            return mHomeVideolist.getCount() + (mIsLoading ? 1 : 0);
         }
 
         @Override
-        public VideolistItem getItem(int i) {
-            return mVideolist.getItem(i);
+        public StatisticsItem getItem(int i) {
+            return mHomeVideolist.getItem(i);
         }
 
         @Override
@@ -345,7 +347,7 @@ public class VideoFragment extends Fragment {
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final VideolistItem item = getItem(position);
+            final StatisticsItem item = getItem(position);
 
             viewHolder.title.setText(item.title);
             viewHolder.date.setText(item.date);
@@ -368,7 +370,7 @@ public class VideoFragment extends Fragment {
                 }
             });
 
-            final String nextPageToken = mVideolist.getNextPageToken(position);
+            final String nextPageToken = mHomeVideolist.getNextPageToken(position);
             if (!isEmpty(nextPageToken) && position == getCount() - 1) {
                 AsyncTask async = new GetVideolistAsyncTask() {
                     @Override
