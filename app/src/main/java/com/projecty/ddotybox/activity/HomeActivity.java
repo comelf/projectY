@@ -60,6 +60,13 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private static final int FEATURED_LAYOUT = 3;
     private static final int BJLOG_LAYOUT = 4;
     private static final int COMMUNITY_LAYOUT = 5;
+    private static final int BJ1_LAYOUT = 6;
+    private static final int BJ2_LAYOUT = 7;
+    private static final int BJ3_LAYOUT = 8;
+    private static final int BJ4_LAYOUT = 9;
+    private static final int BJ5_LAYOUT = 10;
+    private static final int BJ6_LAYOUT = 11;
+    private static final int BJ7_LAYOUT = 12;
 
     private List<FrameLayout> layoutList = new ArrayList<FrameLayout>();
     Toolbar toolbar;
@@ -318,7 +325,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj1:
                 toolbar.setTitle("잠뜰 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ1_LAYOUT);
                 SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
                 fr1.setSandboxId("UUg7rkxrTnIhiHEpXY1ec9NA");
                 getSupportFragmentManager().beginTransaction()
@@ -327,7 +334,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj2:
                 toolbar.setTitle("쁘허 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ2_LAYOUT);
                 SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
                 fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
                 getSupportFragmentManager().beginTransaction()
@@ -336,7 +343,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj3:
                 toolbar.setTitle("태경 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ3_LAYOUT);
                 SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
                 fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
                 getSupportFragmentManager().beginTransaction()
@@ -345,7 +352,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj4:
                 toolbar.setTitle("빅민 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ4_LAYOUT);
                 SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
                 fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
                 getSupportFragmentManager().beginTransaction()
@@ -354,7 +361,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj5:
                 toolbar.setTitle("비콘 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ5_LAYOUT);
                 SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
                 fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
                 getSupportFragmentManager().beginTransaction()
@@ -363,7 +370,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj6:
                 toolbar.setTitle("퀸톨 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ6_LAYOUT);
                 SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
                 fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
                 getSupportFragmentManager().beginTransaction()
@@ -372,7 +379,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj7:
                 toolbar.setTitle("찬이 BOX");
-                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                setLayoutBackgroundColor(BJ6_LAYOUT);
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
@@ -400,6 +407,14 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         layoutList.add((FrameLayout) findViewById(R.id.featured_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bjlog_layout));
         layoutList.add((FrameLayout) findViewById(R.id.community_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj1_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj2_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj3_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj4_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj5_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj6_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.bj7_layout));
+
     }
 
     /*

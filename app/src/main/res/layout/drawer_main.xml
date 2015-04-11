@@ -301,6 +301,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <FrameLayout
+                        android:id="@+id/bj1_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
@@ -320,6 +321,7 @@
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/bj2_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
@@ -339,6 +341,7 @@
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/bj3_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
@@ -358,6 +361,7 @@
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/bj4_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
@@ -377,6 +381,7 @@
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/bj5_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
@@ -396,6 +401,7 @@
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/bj6_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
@@ -415,6 +421,7 @@
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/bj7_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Button
