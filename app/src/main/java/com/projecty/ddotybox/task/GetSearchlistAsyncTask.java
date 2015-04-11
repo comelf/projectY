@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
+import com.projecty.ddotybox.util.ApiKey;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +21,7 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
     private static final String TAG = "GetYouTubelistAsyncTask";
 
     private static final int YOUTUBE_PLAYLIST_MAX_RESULTS = 10;
-    private static final String URL_BASE = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=";
+    private static final String URL_BASE = "https://www.googleapis.com/youtube/v3/search";
     private static final String URL_END = "&channelId=UChQ-VMvdGrYZxviQVMTJOHg&type=video&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
     //            "statistics(viewCount, videoCount))";
 //    , statistics(viewCount, videoCount))";
@@ -40,8 +41,14 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
             }
         }
 
-        String path = URL_BASE + query+ URL_END;
-        final String result = doGetUrl(path);
+        mUriBuilder = Uri.parse(URL_BASE).buildUpon();
+        mUriBuilder.appendQueryParameter("part", "snippet")
+                .appendQueryParameter("q", query)
+                .appendQueryParameter("channelId", "UChQ-VMvdGrYZxviQVMTJOHg")
+                .appendQueryParameter("type", "video")
+                .appendQueryParameter("key", ApiKey.YOUTUBE_API_KEY);
+
+        final String result = doGetUrl(mUriBuilder.build().toString());
         if (result == null) {
 //            Log.e(TAG, "Failed to get playlist");
             return null;

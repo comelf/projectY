@@ -75,10 +75,6 @@ public abstract class GetVideolistAsyncTask extends AsyncTask<String, Void, JSON
             String result2 = doGetUrl(uriBuilder.build().toString());
             JSONObject itemInfo = new JSONObject(result2);
 
-            Log.i(TAG, api);
-            Log.i(TAG, result2);
-            
-
             for (int i = 0; i < itemList.length() ; i++) {
                 JSONObject item = itemInfo.getJSONArray("items").getJSONObject(i);
                 JSONObject snippet = itemList.getJSONObject(i).getJSONObject("snippet");

@@ -35,14 +35,14 @@ import java.util.List;
 
 public class SandboxNetworkFragment extends Fragment {
 
-    private static final String YOUTUBE_PLAYLIST = "UChQ-VMvAGrYZxviQVMTFOHg";
+    private String youtube_playlist = "UUhQ-VMvdGrYZxviQVMTJOHg";
+
     private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
     private CrewVideolist mPlaylist;
     private EtagCache mEtagCache;
     private PlaylistAdapter mAdapter;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
-    private String sandboxId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,22 +67,17 @@ public class SandboxNetworkFragment extends Fragment {
         mAdView.loadAd(adRequest);
 
         // start loading the first page of our playlist
-        AsyncTask async = new GetSandboxNetworkAsyncTask(sandboxId) {
+        AsyncTask async = new GetSandboxNetworkAsyncTask() {
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
             }
 
             @Override
-            public String getBjId() {
-                return sandboxId;
-            }
-
-            @Override
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(youtube_playlist, null);
         asyncTasks.add(async);
 
         return rootView;
@@ -98,7 +93,7 @@ public class SandboxNetworkFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), youtube_playlist);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -124,7 +119,7 @@ public class SandboxNetworkFragment extends Fragment {
     private void handlePlaylistResult(JSONObject result) {
         try {
             if (mPlaylist == null) {
-                mPlaylist = new CrewVideolist(result,sandboxId);
+                mPlaylist = new CrewVideolist(result);
                 initListAdapter(mPlaylist);
             } else {
                 mPlaylist.addPage(result);
@@ -140,8 +135,8 @@ public class SandboxNetworkFragment extends Fragment {
         }
     }
 
-    public void setSandboxId(String sandboxId) {
-        this.sandboxId = sandboxId;
+    public void setSandboxId(String playKey) {
+        this.youtube_playlist = playKey;
     }
 
     protected class PlaylistAdapter extends BaseAdapter {
@@ -231,22 +226,17 @@ public class SandboxNetworkFragment extends Fragment {
 
             final String nextPageToken = mHomeVideolist.getNextPageToken(position);
             if (!isEmpty(nextPageToken) && position == getCount() - 1) {
-                AsyncTask async = new GetSandboxNetworkAsyncTask(sandboxId) {
+                AsyncTask async = new GetSandboxNetworkAsyncTask() {
                             @Override
                             public EtagCache getEtagCache() {
                                 return mEtagCache;
                             }
 
                             @Override
-                            public String getBjId() {
-                                return sandboxId;
-                            }
-
-                            @Override
                             public void onPostExecute(JSONObject result) {
                                 handlePlaylistResult(result);
                             }
-                        }.execute(YOUTUBE_PLAYLIST, null);
+                        }.execute(youtube_playlist, null);
                 asyncTasks.add(async);
 
             }

@@ -17,12 +17,15 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.projecty.ddotybox.R;
+import com.projecty.ddotybox.model.UserProfile;
 
 public class GoogleLogin extends Activity implements OnClickListener,
-        ConnectionCallbacks, OnConnectionFailedListener {
+        ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
     private static final int RC_SIGN_IN = 0;
     // Logcat tag
@@ -123,9 +126,8 @@ public class GoogleLogin extends Activity implements OnClickListener,
     @Override
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
-
+        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
         // Get user's information
         getProfileInformation();
         Intent intent = new Intent(this, HomeActivity.class);
@@ -149,14 +151,11 @@ public class GoogleLogin extends Activity implements OnClickListener,
                 String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-//                Intent intent = new Intent(this, HomeActivity.class);
-//                startActivity(intent);
-//                finish();
-//                UserProfile user = UserProfile.getUser();
-//                user.setUserName(currentPerson.getDisplayName());
-//                user.setUserPhotoUrl(personPhotoUrl);
-//                user.setUserGooglePlusProfile(personGooglePlusProfile);
-//                user.setUserEmail(email);
+                UserProfile user = UserProfile.getUser();
+                user.setUserName(personName);
+                user.setUserPhotoUrl(personPhotoUrl);
+                user.setUserGooglePlusProfile(personGooglePlusProfile);
+                user.setUserEmail(email);
 
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -202,4 +201,8 @@ public class GoogleLogin extends Activity implements OnClickListener,
     }
 
 
+    @Override
+    public void onResult(People.LoadPeopleResult loadPeopleResult) {
+
+    }
 }

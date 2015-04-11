@@ -12,11 +12,9 @@ import org.json.JSONObject;
 import java.text.ParseException;
 
 public class CrewVideolist extends VideoList {
-    private String sandboxId;
 
-    public CrewVideolist(JSONObject jsonPlaylist, String sandboxId) throws JSONException, ParseException {
+    public CrewVideolist(JSONObject jsonPlaylist) throws JSONException, ParseException {
         super(jsonPlaylist);
-        this.sandboxId = sandboxId;
         addPage(jsonPlaylist);
     }
 
@@ -27,7 +25,7 @@ public class CrewVideolist extends VideoList {
                 jsonPlaylist.optString("nextPageToken", null)) {
             @Override
             protected StatisticsItem getStatisticsItem(JSONObject item) throws JSONException, ParseException {
-                return new CrewVideoItem(item,sandboxId);
+                return new CrewVideoItem(item);
             }
         });
     }

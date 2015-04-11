@@ -319,11 +319,64 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.bj1:
                 toolbar.setTitle("잠뜰 BOX");
                 setLayoutBackgroundColor(PLAYLIST_LAYOUT);
-                SandboxNetworkFragment fr = new SandboxNetworkFragment();
-//                fr.setSandboxId("sleepground");
-                fr.setSandboxId("snippet");
+                SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
+                fr1.setSandboxId("UUg7rkxrTnIhiHEpXY1ec9NA");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr)
+                        .replace(R.id.container,fr1)
+                        .commit();
+                break;
+            case R.id.bj2:
+                toolbar.setTitle("쁘허 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
+                fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr2)
+                        .commit();
+                break;
+            case R.id.bj3:
+                toolbar.setTitle("태경 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
+                fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr3)
+                        .commit();
+                break;
+            case R.id.bj4:
+                toolbar.setTitle("빅민 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
+                fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr4)
+                        .commit();
+                break;
+            case R.id.bj5:
+                toolbar.setTitle("비콘 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
+                fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr5)
+                        .commit();
+                break;
+            case R.id.bj6:
+                toolbar.setTitle("퀸톨 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
+                fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr6)
+                        .commit();
+                break;
+            case R.id.bj7:
+                toolbar.setTitle("찬이 BOX");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
+                fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container,fr7)
                         .commit();
                 break;
 

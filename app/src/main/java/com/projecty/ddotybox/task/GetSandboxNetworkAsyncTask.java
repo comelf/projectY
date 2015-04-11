@@ -21,12 +21,11 @@ public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void,
     private static final String TAG = "GetPlaylistAsyncTask";
 
     private static final int YOUTUBE_PLAYLIST_MAX_RESULTS = 10;
-    private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/playlists";
-    private final String YOUTUBE_PLAYLIST_PART ;
-    private String crewName;
-    public GetSandboxNetworkAsyncTask(String crewName) {
-        this.crewName = crewName;
-        YOUTUBE_PLAYLIST_PART = crewName + ",contentDetails";
+    private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/playlistItems";
+    private final String YOUTUBE_PLAYLIST_FIELDS = "etag,pageInfo,nextPageToken,items(id, snippet(title,position,publishedAt, thumbnails(medium,high),resourceId/videoId))";
+    private final String YOUTUBE_PLAYLIST_PART ="snippet";
+    public GetSandboxNetworkAsyncTask() {
+
         mUriBuilder = Uri.parse(YOUTUBE_PLAYLISTITEMS_URL).buildUpon();
     }
 
@@ -46,9 +45,10 @@ public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void,
             }
         }
 
-        mUriBuilder.appendQueryParameter("channelId", "UChQ-VMvdGrYZxviQVMTJOHg")
+        mUriBuilder.appendQueryParameter("playlistId", playlistId)
                 .appendQueryParameter("part", YOUTUBE_PLAYLIST_PART)
                 .appendQueryParameter("maxResults", Integer.toString(YOUTUBE_PLAYLIST_MAX_RESULTS))
+                .appendQueryParameter("fields", YOUTUBE_PLAYLIST_FIELDS)
                 .appendQueryParameter("key", ApiKey.YOUTUBE_API_KEY);
 
         Log.i(TAG, mUriBuilder.build().toString());
@@ -64,7 +64,7 @@ public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void,
             JSONArray itemList = jsonObject.getJSONArray("items");
             String items = "";
             for (int i = 0; i < itemList.length() ; i++) {
-                String id = itemList.getJSONObject(i).getString("id");
+                String id = itemList.getJSONObject(i).getJSONObject("snippet").getJSONObject("resourceId").getString("videoId");
                 items = items + id + ",";
 //                Log.i(TAG, id);
             }
@@ -77,21 +77,18 @@ public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void,
             }
             JSONObject itemInfo = new JSONObject(result2);
 
-            Log.i(TAG, api);
-            Log.i(TAG, result2);
-
 
             for (int i = 0; i < itemList.length() ; i++) {
                 JSONObject item = itemInfo.getJSONArray("items").getJSONObject(i);
-                JSONObject snippet = itemList.getJSONObject(i).getJSONObject("snippet");
+                JSONObject crew = itemList.getJSONObject(i).getJSONObject("snippet");
 
                 String duration = item.getJSONObject("contentDetails").getString("duration");
                 String viewCount = String.valueOf(item.getJSONObject("statistics").getLong("viewCount"));
                 String likeCount = String.valueOf(item.getJSONObject("statistics").getLong("likeCount"));
 
-                snippet.put("duration",duration);
-                snippet.put("viewCount", viewCount);
-                snippet.put("likeCount", likeCount);
+                crew.put("duration",duration);
+                crew.put("viewCount", viewCount);
+                crew.put("likeCount", likeCount);
             }
 
 
@@ -107,7 +104,6 @@ public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void,
 
     protected Uri.Builder mUriBuilder;
     public abstract EtagCache getEtagCache();
-    public abstract String getBjId();
     public String doGetUrl(String url) {
 //        Log.d(TAG, url);
 
