@@ -1,4 +1,4 @@
-package com.projecty.ddotybox.util;
+package com.projecty.ddotybox.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

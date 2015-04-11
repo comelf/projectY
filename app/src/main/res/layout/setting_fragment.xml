@@ -30,16 +30,19 @@
             android:layout_marginBottom="1dp"
             android:background="#FFFFFF">
             <TextView
+
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="이름"
                 android:textSize="16dp"
                 android:textColor="#d2d2d2"
                 android:padding="20dp"/>
-            <TextView
+            <EditText
+                android:id="@+id/user_sandbox_id"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="BROWN"
+                android:lines="1"
                 android:textColor="#48CFAD"
                 android:textSize="16dp"
                 android:paddingTop="20dp"
@@ -60,6 +63,7 @@
                 android:textColor="#d2d2d2"
                 android:padding="20dp"/>
             <TextView
+                android:id="@+id/user_google_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="brown@gmail.com"
@@ -114,6 +118,7 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF">
             <Button
+                android:id="@+id/user_save_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -125,6 +130,7 @@
                 android:textSize="16dp"
                 android:text="저장"/>
             <Button
+                android:id="@+id/user_logout_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

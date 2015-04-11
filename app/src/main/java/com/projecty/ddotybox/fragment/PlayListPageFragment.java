@@ -15,13 +15,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.kevinsawicki.etag.EtagCache;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
+import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.PlayItem;
 import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.projecty.ddotybox.model.list.HomeVideolist;
+import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
 import com.projecty.ddotybox.task.GetPlayListPageAsyncTask;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
 import com.squareup.picasso.Picasso;
@@ -47,6 +50,8 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
     private PlayItem item_play;
     private HomeVideolist mHomeVideolist;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
+    private int userId;
+    ImageButton favBtn;
 
     public PlayListPageFragment() {
 
@@ -64,7 +69,7 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
         TextView title = (TextView) view.findViewById(R.id.video_title_i);
 
         ImageButton playBtn = (ImageButton) view.findViewById(R.id.playButton);
-
+        favBtn = (ImageButton) view.findViewById(R.id.favoriteButton);
         date.setText(item_play.date);
         title.setText(item_play.title);
 
@@ -75,8 +80,8 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
                 .into(imageView);
 
         playBtn.setOnClickListener(this);
-
-
+        favBtn.setOnClickListener(this);
+        userId = UserProfile.getStaticUserId();
         mListView = (ListView) view.findViewById(R.id.play_list_view);
 
 
@@ -162,8 +167,36 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + item.videoId + "&list=" + item_play.id)));
                 break;
             case R.id.favoriteButton:
+                if(userId<1){
+                    Toast.makeText(this.getActivity(),
+                            "로그인을 해주세요.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                AsyncTask like = new AddFavoriteAsyncTask(){
+                    @Override
+                    public void onPostExecute(String result) {
+                        handleFavVideoResult(result);
+                    }
 
+                }.execute("/add_favorite_playlist",item_play.id,String.valueOf(userId), null);
+                asyncTasks.add(like);
                 break;
+        }
+    }
+
+    private void handleFavVideoResult(String result) {
+        if(result.equals("success")){
+            Toast.makeText(this.getActivity(),
+                    "성공", Toast.LENGTH_LONG).show();
+            favBtn.setEnabled(false);
+        }else if(result.equals("duplication")){
+            Toast.makeText(this.getActivity(),
+                    "성공", Toast.LENGTH_LONG).show();
+            favBtn.setEnabled(false);
+            favBtn.setAlpha((float)0.5);
+        }else {
+            Toast.makeText(this.getActivity(),
+                    "서버에 연결할수 없습니다.", Toast.LENGTH_LONG).show();
         }
     }
 

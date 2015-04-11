@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.fragment.BjLogFragment;
+import com.projecty.ddotybox.fragment.CommunityFragment;
 import com.projecty.ddotybox.fragment.FavoriteFragment;
 import com.projecty.ddotybox.fragment.PlayListFragment;
 import com.projecty.ddotybox.fragment.RecommendFragment;
@@ -317,10 +318,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.communityButton:
                 toolbar.setTitle("커뮤니티");
                 setLayoutBackgroundColor(COMMUNITY_LAYOUT);
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.container, new AdFragment())
-//                        .addToBackStack(null)
-//                        .commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new CommunityFragment())
+                        .commit();
 
                 break;
             case R.id.bj1:

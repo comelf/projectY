@@ -1,5 +1,7 @@
 package com.projecty.ddotybox.util;
 
+import com.projecty.ddotybox.adapter.ViewPagerAdapter;
+
 /**
  * Created by byungwoo on 15. 3. 27..
  */

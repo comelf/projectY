@@ -44,7 +44,7 @@
 
 
                     android:background="@android:color/transparent"
-                    android:src="@drawable/button_play_off"/>
+                    android:src="@drawable/button_play_on"/>
                 <ImageButton
                     android:id="@+id/likeButton"
                     android:layout_width="96dp"
@@ -53,7 +53,7 @@
 
 
                     android:background="@android:color/transparent"
-                    android:src="@drawable/button_like_off"/>
+                    android:src="@drawable/button_like_on"/>
                 <ImageButton
                     android:id="@+id/favoriteButton"
                     android:layout_width="96dp"
@@ -61,7 +61,7 @@
                     android:scaleType="fitXY"
 
                     android:background="@android:color/transparent"
-                    android:src="@drawable/button_favorite_off"/>
+                    android:src="@drawable/button_favorite_on"/>
             </LinearLayout>
 
             <TextView

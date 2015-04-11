@@ -2,7 +2,7 @@ package com.projecty.ddotybox.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
+import android.content.IntentSender;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -55,16 +55,17 @@ public class GoogleLogin extends Activity implements OnClickListener,
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "NotoSans.otf");
         btnSignIn.setTypeface(custom_font);
 
+
+    }
+
+    protected void onStart() {
+        super.onStart();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(new Scope("https://www.googleapis.com/auth/youtube"))
                 .addScope(new Scope("https://www.googleapis.com/auth/youtubepartner"))
                 .addScope(Plus.SCOPE_PLUS_PROFILE).build();
-    }
-
-    protected void onStart() {
-        super.onStart();
         mGoogleApiClient.connect();
     }
 
@@ -75,6 +76,8 @@ public class GoogleLogin extends Activity implements OnClickListener,
         }
     }
 
+
+
     /**
      * Method to resolve any signin errors
      * */
@@ -83,7 +86,7 @@ public class GoogleLogin extends Activity implements OnClickListener,
             try {
                 mIntentInProgress = true;
                 mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (SendIntentException e) {
+            } catch (IntentSender.SendIntentException e) {
                 mIntentInProgress = false;
                 mGoogleApiClient.connect();
             }

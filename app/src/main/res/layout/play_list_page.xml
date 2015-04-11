@@ -42,7 +42,7 @@
                     android:layout_height="96dp"
                     android:scaleType="fitXY"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/button_play_off"/>
+                    android:src="@drawable/button_play_on"/>
 
                 <ImageButton
                     android:id="@+id/favoriteButton"
@@ -50,7 +50,7 @@
                     android:layout_height="96dp"
                     android:scaleType="fitXY"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/button_like_off"/>
+                    android:src="@drawable/button_favorite_on"/>
             </LinearLayout>
 
             <TextView
