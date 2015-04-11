@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.github.kevinsawicki.etag.EtagCache;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
+import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.PlayItem;
 import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.projecty.ddotybox.model.list.PlaylistFav;
@@ -51,7 +52,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
     Button favVideoBtn;
     Button favPlayBtn;
 
-    int user_id = 1;
+    int user_id =-1;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.favorite_fragment, container, false);
@@ -72,6 +73,15 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
         if (mVideolist != null) {
             initListAdapter(mVideolist);
         }
+
+        UserProfile user = UserProfile.getUser();
+        this.user_id = user.getUserId();
+
+        if(user_id<1){
+            return view;
+        }
+
+
 
 //        // start loading the first page of our playlist
         aVideo = new GetFavoriteAsyncTask("/get_favorite_videolist","video_list", user_id){

@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -57,6 +58,8 @@ public class GoogleLogin extends Activity implements OnClickListener,
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build())
+                .addScope(new Scope("https://www.googleapis.com/auth/youtube"))
+                .addScope(new Scope("https://www.googleapis.com/auth/youtubepartner"))
                 .addScope(Plus.SCOPE_PLUS_PROFILE).build();
     }
 
@@ -152,10 +155,11 @@ public class GoogleLogin extends Activity implements OnClickListener,
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
                 UserProfile user = UserProfile.getUser();
-                user.setUserName(personName);
+                user.setUserGoogleName(personName);
                 user.setUserPhotoUrl(personPhotoUrl);
                 user.setUserGooglePlusProfile(personGooglePlusProfile);
                 user.setUserEmail(email);
+                user.login();
 
             } else {
                 Toast.makeText(getApplicationContext(),
