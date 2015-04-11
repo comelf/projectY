@@ -29,8 +29,8 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
     private CommentslistAdapter mAdapter;
     private StatisticsItem item;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
-    private int userId;
     private ImageButton favoriteBtn;
+    private int userId;
 
     public void setItem(StatisticsItem item){
         this.item = item;
@@ -64,9 +64,6 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
         mListView = (ListView) view.findViewById(R.id.commentsListview);
 
         userId = UserProfile.getStaticUserId();
-        if(userId<1){
-            return null;
-        }
 
         String jsonData ="";
 
