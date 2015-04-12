@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.projecty.ddotybox.R;
+import com.projecty.ddotybox.model.item.Comment;
+import com.projecty.ddotybox.model.list.CommentList;
 
 /**
  * Created by byungwoo on 15. 4. 11..
@@ -15,21 +17,22 @@ public class CommentslistAdapter extends BaseAdapter{
 
     private final LayoutInflater mInflater;
     private ViewHolder viewHolder;
+    private CommentList commentList;
 
-    public CommentslistAdapter(String jsonData, LayoutInflater mInflater) {
+    public CommentslistAdapter(CommentList commentList, LayoutInflater mInflater) {
         this.mInflater = mInflater;
-
+        this.commentList = commentList;
         //JSON 파싱!
     }
 
     @Override
     public int getCount() {
-        return 10;
+        return commentList.getCount();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Comment getItem(int position) {
+        return commentList.getComment(position);
     }
 
     @Override
@@ -40,18 +43,19 @@ public class CommentslistAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-//            if ( position == (getCount() - 1)) {
-//                return mInflater.inflate(R.layout.comment_card, null, false);
-//            }
+            if ( position == (getCount() - 1)) {
+                return mInflater.inflate(R.layout.null_comment_card, null, false);
+            }
 
         if (convertView == null || convertView.getTag() == null) {
             viewHolder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.comment_card, null, false);
             viewHolder.detail = (TextView) convertView.findViewById(R.id.comment_detail);
-
             convertView.setTag(viewHolder);
 
-            viewHolder.detail.setText("댓글댓글 댓글댓글 댓글댓글 댓글댓글 댓글댓글");
+            Comment comment = getItem(position);
+
+            viewHolder.detail.setText(comment.content);
         }
 
         viewHolder = (ViewHolder) convertView.getTag();

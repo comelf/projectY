@@ -230,6 +230,7 @@
 
 
             <EditText
+                android:id="@+id/comment_input"
                 android:layout_marginRight="70dp"
                 android:layout_marginLeft="41dp"
                 android:gravity="center"

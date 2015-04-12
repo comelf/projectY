@@ -1,5 +1,6 @@
 package com.projecty.ddotybox.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,13 +15,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.kevinsawicki.etag.EtagCache;
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.adapter.CommentslistAdapter;
 import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.CommentList;
 import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
+import com.projecty.ddotybox.task.GetCommentListAsyncTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +40,9 @@ public class DetailPageFragment extends Fragment implements View.OnClickListener
     private ImageButton favoriteBtn;
     private int userId;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
+    private static final String COMMENT_KEY = "COMMENT_KEY";
+    private EtagCache mEtagCache;
+    private CommentList commentList;
 
     public DetailPageFragment() {
 
@@ -67,13 +79,44 @@ public class DetailPageFragment extends Fragment implements View.OnClickListener
 
         mListView = (ListView) view.findViewById(R.id.commentsListview);
 
+        AsyncTask commentAsync = new GetCommentListAsyncTask() {
+            @Override
+            public EtagCache getEtagCache() {
+                return mEtagCache;
+            }
 
-        String jsonData ="";
+            @Override
+            public void onPostExecute(JSONObject result) {
+                handletResult(result);
+            }
+        }.execute(COMMENT_KEY,item.videoId, null);
+        asyncTasks.add(commentAsync);
 
-        if(mListView!=null){
-            initListAdapter(jsonData);
-        }
+
+
         return view;
+    }
+
+    private void handletResult(JSONObject result) {
+        try {
+            if (commentList == null) {
+                commentList = new CommentList(result);
+                initListAdapter(commentList);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // initialize our etag cache for this playlist
+        File cacheFile = new File(activity.getFilesDir(), COMMENT_KEY);
+        mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
     @Override
@@ -86,8 +129,8 @@ public class DetailPageFragment extends Fragment implements View.OnClickListener
 
     }
 
-    private void initListAdapter(String jsonData) {
-        mAdapter = new CommentslistAdapter(jsonData,getLayoutInflater(null));
+    private void initListAdapter(CommentList commentList) {
+        mAdapter = new CommentslistAdapter(commentList, getLayoutInflater(null));
         mListView.setAdapter(mAdapter);
     }
 

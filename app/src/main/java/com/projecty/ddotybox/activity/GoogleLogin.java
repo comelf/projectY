@@ -158,7 +158,7 @@ public class GoogleLogin extends Activity implements OnClickListener,
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
                 UserProfile user = UserProfile.getUser();
-                user.setUserGoogleName(personName);
+                user.setUserName(personName);
                 user.setUserPhotoUrl(personPhotoUrl);
                 user.setUserGooglePlusProfile(personGooglePlusProfile);
                 user.setUserEmail(email);

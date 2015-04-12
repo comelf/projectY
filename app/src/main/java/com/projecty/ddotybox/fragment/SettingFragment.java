@@ -1,18 +1,13 @@
 package com.projecty.ddotybox.fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,18 +17,13 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.model.UserProfile;
-import com.projecty.ddotybox.task.SetLoginIdAsyncTask;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 /**
  * Created by byungwoo on 15. 4. 5..
  */
 public class SettingFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-    EditText user_id;
-    AsyncTask task;
+    TextView user_id;
     UserProfile user;
     private GoogleApiClient mGoogleApiClient;
     private boolean mSignInClicked = false;
@@ -41,7 +31,7 @@ public class SettingFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting_fragment, container, false);
-        user_id = (EditText) view.findViewById(R.id.user_sandbox_id);
+        user_id = (TextView) view.findViewById(R.id.user_sandbox_id);
         TextView user_email = (TextView) view.findViewById(R.id.user_google_email);
         Button logout = (Button) view.findViewById(R.id.user_logout_button);
         user = UserProfile.getUser();
@@ -50,36 +40,6 @@ public class SettingFragment extends Fragment implements GoogleApiClient.Connect
         user_email.setText(user.getUserEmail());
 
         logout.setOnClickListener(this);
-
-        user_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                     if(hasFocus){
-
-                     }
-            }
-        });
-        user_id.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                InputMethodManager imm= (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                String text = String.valueOf(user_id.getText()).trim();
-
-                task = new SetLoginIdAsyncTask(){
-                    @Override
-                    public void onPostExecute(JSONObject result) {
-                        handleFavVideoResult(result);
-                    }
-
-                }.execute(String.valueOf(user.getUserId()),text, null);
-
-
-                user_id.setText(text);
-                return false;
-            }
-        });
-
 
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
@@ -91,30 +51,11 @@ public class SettingFragment extends Fragment implements GoogleApiClient.Connect
         return view;
     }
 
-    private void handleFavVideoResult(JSONObject result) {
-        boolean msg = false;
-        try {
-            msg = result.getBoolean("success");
-        } catch (JSONException e) {
-            Toast.makeText(this.getActivity(),
-                    "서버에 연결할수 없습니다.", Toast.LENGTH_LONG).show();
-        }
-        if(msg){
-            Toast.makeText(this.getActivity(),
-                    "변경되었습니다.", Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(this.getActivity(),
-                    "변경에 실패했습니다.", Toast.LENGTH_LONG).show();
-        }
-    }
 
     @Override
     public void onDetach() {
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
-        }
-        if(task!=null) {
-            task.cancel(true);
         }
     }
 

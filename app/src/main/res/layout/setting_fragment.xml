@@ -37,7 +37,7 @@
                 android:textSize="16dp"
                 android:textColor="#d2d2d2"
                 android:padding="20dp"/>
-            <EditText
+            <TextView
                 android:id="@+id/user_sandbox_id"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

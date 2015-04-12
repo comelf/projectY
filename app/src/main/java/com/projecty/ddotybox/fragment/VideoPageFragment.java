@@ -1,36 +1,52 @@
 package com.projecty.ddotybox.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.kevinsawicki.etag.EtagCache;
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.adapter.CommentslistAdapter;
 import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.CommentList;
 import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
+import com.projecty.ddotybox.task.GetCommentListAsyncTask;
+import com.projecty.ddotybox.task.SetCommentAsyncTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VideoPageFragment extends Fragment implements View.OnClickListener{
     ListView mListView;
     private CommentslistAdapter mAdapter;
+    private CommentList commentList;
     private StatisticsItem item;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
     private ImageButton favoriteBtn;
     private int userId;
+    private EtagCache mEtagCache;
+    private static final String COMMENT_KEY = "COMMENT_KEY";
+    private boolean canWrite = true;
 
     public void setItem(StatisticsItem item){
         this.item = item;
@@ -47,6 +63,7 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
         ImageButton playBtn = (ImageButton) view.findViewById(R.id.playButton);
         ImageButton likeBtn = (ImageButton) view.findViewById(R.id.likeButton);
         favoriteBtn = (ImageButton) view.findViewById(R.id.favoriteButton);
+        EditText commentEdit = (EditText) view.findViewById(R.id.comment_input);
 
         date.setText(item.date);
         play.setText(item.viewCount);
@@ -61,20 +78,70 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
         likeBtn.setOnClickListener(this);
         favoriteBtn.setOnClickListener(this);
 
+        commentEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(canWrite) {
+                    AsyncTask commentAsync = new SetCommentAsyncTask() {
+                        @Override
+                        public void onPostExecute(JSONObject result) {
+                            handletCommentInsertResult(result);
+                        }
+                    }.execute(String.valueOf(v.getText()), item.videoId, String.valueOf(UserProfile.getStaticUserId()), null);
+                    asyncTasks.add(commentAsync);
+                    canWrite = false;
+                }
+                return false;
+            }
+        });
+
+
         mListView = (ListView) view.findViewById(R.id.commentsListview);
 
         userId = UserProfile.getStaticUserId();
 
-        String jsonData ="";
-
-        if(mListView!=null){
-            initListAdapter(jsonData);
+        if(commentList!=null){
+            initListAdapter(commentList);
         }
+
+        AsyncTask commentAsync = new GetCommentListAsyncTask() {
+            @Override
+            public EtagCache getEtagCache() {
+                return mEtagCache;
+            }
+
+            @Override
+            public void onPostExecute(JSONObject result) {
+                handletResult(result);
+            }
+        }.execute(COMMENT_KEY,item.videoId, null);
+        asyncTasks.add(commentAsync);
+
+
+
         return view;
     }
 
-    private void initListAdapter(String jsonData) {
-        mAdapter = new CommentslistAdapter(jsonData,getLayoutInflater(null));
+    private void handletCommentInsertResult(JSONObject result) {
+    }
+
+    private void handletResult(JSONObject result) {
+        try {
+            if (commentList == null) {
+                commentList = new CommentList(result);
+                initListAdapter(commentList);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initListAdapter(CommentList commentList) {
+        mAdapter = new CommentslistAdapter(commentList,getLayoutInflater(null));
         mListView.setAdapter(mAdapter);
     }
 
@@ -102,6 +169,14 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
                 asyncTasks.add(like);
                 break;
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // initialize our etag cache for this playlist
+        File cacheFile = new File(activity.getFilesDir(), COMMENT_KEY);
+        mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
     @Override

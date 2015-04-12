@@ -14,7 +14,7 @@ public class UserProfile {
     private String userPhotoUrl;
     private String userGooglePlusProfile;
     private String userEmail;
-    private String userGoogleName;
+
     private static int userId =-1;
     private boolean isLogin=false;
 
@@ -50,14 +50,6 @@ public class UserProfile {
         this.userGooglePlusProfile = userGooglePlusProfile;
     }
 
-    public String getUserGoogleName() {
-        return userGoogleName;
-    }
-
-    public void setUserGoogleName(String userGoogleName) {
-        this.userGoogleName = userGoogleName;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -89,7 +81,7 @@ public class UserProfile {
             public void onPostExecute(JSONObject result) {
                 handleResult(result);
             }
-        }.execute(userGoogleName,userEmail, null);
+        }.execute(userName,userEmail, null);
 
     }
 
@@ -104,7 +96,6 @@ public class UserProfile {
 
         try {
             this.userId =  Integer.parseInt(result.getString("user_id"));
-            this.userName = result.getString("user_name");
             this.isLogin = true;
         } catch (JSONException e) {
             e.printStackTrace();
