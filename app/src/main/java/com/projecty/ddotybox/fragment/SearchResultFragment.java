@@ -26,6 +26,7 @@ import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.projecty.ddotybox.model.list.SearchVideolist;
 import com.projecty.ddotybox.task.GetSearchlistAsyncTask;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -45,7 +46,6 @@ public class SearchResultFragment extends Fragment {
     private SearchVideolist mVideolist;
     private PlaylistAdapter mAdapter;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
-    private static final String YOUTUBE_PLAYLIST = "UChQ-VMvdGrYZDDiiVMTJOHg";
 
     private String query;
 
@@ -79,7 +79,7 @@ public class SearchResultFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, query);
+        }.execute(Global.YOUTUBE_PLAYLIST, query);
         asyncTasks.add(async);
 
         return rootView;
@@ -89,7 +89,7 @@ public class SearchResultFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -234,6 +234,7 @@ public class SearchResultFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     moveFragement(position);
+
                 }
             });
 

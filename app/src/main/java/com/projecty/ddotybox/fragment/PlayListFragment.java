@@ -24,6 +24,7 @@ import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.model.base.PlayItem;
 import com.projecty.ddotybox.model.list.PlaylistOri;
 import com.projecty.ddotybox.task.GetPlaylistAsyncTask;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -35,9 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayListFragment extends Fragment {
-
-    private static final String YOUTUBE_PLAYLIST = "UChQ-VMvdGrYZxviQVMTJOHg";
-    private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
     private PlaylistOri mPlaylist;
     private EtagCache mEtagCache;
@@ -54,7 +52,7 @@ public class PlayListFragment extends Fragment {
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mPlaylist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), PlaylistOri.class);
+            mPlaylist = new Gson().fromJson(savedInstanceState.getString(Global.YOUTUBE_PLAYLIST), PlaylistOri.class);
         }
 
         // ensure the adapter and listview are initialized
@@ -77,7 +75,7 @@ public class PlayListFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(async);
 
         return rootView;
@@ -86,14 +84,14 @@ public class PlayListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         String json = new Gson().toJson(mPlaylist);
-        outState.putString(PLAYLIST_KEY, json);
+        outState.putString(Global.YOUTUBE_PLAYLIST, json);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -245,7 +243,7 @@ public class PlayListFragment extends Fragment {
                     public void onPostExecute(JSONObject result) {
                         handlePlaylistResult(result);
                     }
-                }.execute(YOUTUBE_PLAYLIST, nextPageToken);
+                }.execute(Global.YOUTUBE_PLAYLIST, nextPageToken);
                 asyncTasks.add(async);
                 setIsLoading(true);
             }

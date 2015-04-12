@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="#ED5565"/>
+            android:background="@color/theme_color2"/>
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.projecty.actitity.HomeActivity"
-            tools:ignore="MergeRootFrame" />
+            tools:ignore="MergeRootFrame"/>
 
     </LinearLayout>
 
@@ -35,7 +35,7 @@
         android:orientation="vertical"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="#656D78"
+        android:background="@color/drawer_background"
         android:choiceMode="singleChoice" >
 
         <LinearLayout
@@ -61,7 +61,7 @@
                     android:id="@+id/user_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="도티 Box"
+                    android:text=""
                     android:textSize="20dp"
                     android:layout_marginTop="3dp"
                     android:layout_alignParentTop="true"/>
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textSize="12dp"
-                    android:textColor="#d9dadc"
+                    android:textColor="@color/text_light_gray"
                     android:layout_marginLeft="2dp"
                     android:layout_marginBottom="3dp"
                     android:layout_alignParentBottom="true"/>
@@ -82,7 +82,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#434A54"
+            android:background="@color/drawer_setting"
             android:gravity="left|center_vertical"
             android:paddingLeft="@dimen/drawerLeftPadding"
             android:paddingRight="@dimen/drawerLeftPadding">
@@ -172,7 +172,7 @@
                         android:id="@+id/home_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#ED5565">
+                        android:background="@color/theme_color2">
                         <Button
                             android:id="@+id/homeButton"
                             android:layout_width="match_parent"

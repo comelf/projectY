@@ -2,6 +2,7 @@ package com.projecty.ddotybox.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -35,7 +36,7 @@ import com.projecty.ddotybox.fragment.SearchResultFragment;
 import com.projecty.ddotybox.fragment.SettingFragment;
 import com.projecty.ddotybox.fragment.VideoFragment;
 import com.projecty.ddotybox.model.UserProfile;
-import com.projecty.ddotybox.util.ApiKey;
+import com.projecty.ddotybox.util.Global;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         setLayoutList();
         setUserProfile();
 
-        if (ApiKey.YOUTUBE_API_KEY.startsWith("YOUR_API_KEY")) {
+        if (Global.YOUTUBE_API_KEY.startsWith("YOUR_API_KEY")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setMessage("Edit ApiKey.java and replace \"YOUR_API_KEY\" with your Applications Browser API Key")
                     .setTitle("Missing API Key")
@@ -269,10 +270,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
                 break;
             case R.id.inviteButton:
-                Toast toast1 = Toast.makeText(getApplicationContext(),
-                        "준비중입니다.", Toast.LENGTH_SHORT);
-                toast1.setGravity(Gravity.CENTER, 0, 0);
-                toast1.show();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "[도티 BOX 초대]\n" +
+                        "도티TV의 모바일 공식 앱 '도티 BOX' 전격 출시! 앱 다운받고 도티의 게임방송을 더욱 쉽고 빠르게 시청해보세요! https://play.google.com/store/apps/details?id=com.projecty.ddotybox");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
                 break;
             case R.id.readButton:
                 Toast toast2 = Toast.makeText(getApplicationContext(),
@@ -393,7 +396,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     }
 
      private void setLayoutBackgroundColor(int layout_id){
-
            for(FrameLayout layout : layoutList){
                layout.setBackgroundColor(Color.parseColor("#656D78"));
            }

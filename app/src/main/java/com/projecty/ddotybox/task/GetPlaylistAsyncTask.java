@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
-import com.projecty.ddotybox.util.ApiKey;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,10 +42,10 @@ public abstract class GetPlaylistAsyncTask extends AsyncTask<String, Void, JSONO
             }
         }
 
-        mUriBuilder.appendQueryParameter("channelId", "UChQ-VMvdGrYZxviQVMTJOHg")
+        mUriBuilder.appendQueryParameter("channelId", Global.CHANNEL_ID)
                 .appendQueryParameter("part", YOUTUBE_PLAYLIST_PART)
                 .appendQueryParameter("maxResults", Integer.toString(YOUTUBE_PLAYLIST_MAX_RESULTS))
-                .appendQueryParameter("key", ApiKey.YOUTUBE_API_KEY);
+                .appendQueryParameter("key", Global.YOUTUBE_API_KEY);
 
         Log.i(TAG, mUriBuilder.build().toString());
         final String result = doGetUrl(mUriBuilder.build().toString());
@@ -84,12 +84,6 @@ public abstract class GetPlaylistAsyncTask extends AsyncTask<String, Void, JSONO
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (request.cached()) {
-            Log.d(TAG, "Cache hit");
-        } else {
-            Log.d(TAG, "Cache miss");
         }
 
         return builder.toString();

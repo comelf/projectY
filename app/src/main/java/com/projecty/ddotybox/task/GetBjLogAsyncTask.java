@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,14 +18,12 @@ import java.io.InputStreamReader;
  * Created by byungwoo on 15. 4. 9..
  */
 public abstract class GetBjLogAsyncTask extends AsyncTask<String, Void, JSONObject> {
-    private static final String URL = "http://52.68.56.175";
-
     public abstract EtagCache getEtagCache();
 
     @Override
     protected JSONObject doInBackground(String... params) {
 
-        String result = doGetUrl(URL+"/get_ddottylog");
+        String result = doGetUrl(Global.SERVER+"/get_ddottylog");
         if (result == null) {
             return null;
         }

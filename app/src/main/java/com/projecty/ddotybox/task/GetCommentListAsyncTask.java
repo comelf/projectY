@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,8 +19,6 @@ import java.io.InputStreamReader;
  * Created by byungwoo on 15. 4. 11..
  */
 public abstract class GetCommentListAsyncTask extends AsyncTask<String, Void, JSONObject> {
-
-    private final String SERVER = "http://52.68.56.175/get_comment";
     protected Uri.Builder mUriBuilder;
 
     public abstract EtagCache getEtagCache();
@@ -33,7 +32,7 @@ public abstract class GetCommentListAsyncTask extends AsyncTask<String, Void, JS
             return null;
         }
 
-        mUriBuilder = Uri.parse(SERVER).buildUpon();
+        mUriBuilder = Uri.parse(Global.SERVER+"/get_comment").buildUpon();
         mUriBuilder.appendQueryParameter("video_id", videoId);
 
         final String result = doGetUrl(mUriBuilder.build().toString());

@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
-import com.projecty.ddotybox.util.ApiKey;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,12 +19,8 @@ import java.io.InputStreamReader;
 
 public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private static final String TAG = "GetYouTubelistAsyncTask";
-
-    private static final int YOUTUBE_PLAYLIST_MAX_RESULTS = 10;
     private static final String URL_BASE = "https://www.googleapis.com/youtube/v3/search";
-    private static final String URL_END = "&channelId=UChQ-VMvdGrYZxviQVMTJOHg&type=video&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
-    //            "statistics(viewCount, videoCount))";
-//    , statistics(viewCount, videoCount))";
+
     String query;
 
     @Override
@@ -44,9 +40,9 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
         mUriBuilder = Uri.parse(URL_BASE).buildUpon();
         mUriBuilder.appendQueryParameter("part", "snippet")
                 .appendQueryParameter("q", query)
-                .appendQueryParameter("channelId", "UChQ-VMvdGrYZxviQVMTJOHg")
+                .appendQueryParameter("channelId", Global.CHANNEL_ID)
                 .appendQueryParameter("type", "video")
-                .appendQueryParameter("key", ApiKey.YOUTUBE_API_KEY);
+                .appendQueryParameter("key", Global.YOUTUBE_API_KEY);
 
         final String result = doGetUrl(mUriBuilder.build().toString());
         if (result == null) {
@@ -64,7 +60,7 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
                 items = items + id + ",";
 //                Log.i(TAG, id);
             }
-            String api = "https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails&id=" + items + "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
+            String api = "https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails,snippet&id=" + items + "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
             Uri.Builder uriBuilder = Uri.parse(api).buildUpon();
             String result2 = doGetUrl(uriBuilder.build().toString());
             JSONObject itemInfo = new JSONObject(result2);
@@ -80,10 +76,12 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
                 String duration = item.getJSONObject("contentDetails").getString("duration");
                 String viewCount = String.valueOf(item.getJSONObject("statistics").getLong("viewCount"));
                 String likeCount = String.valueOf(item.getJSONObject("statistics").getLong("likeCount"));
+                String description = item.getJSONObject("snippet").getString("description");
 
                 snippet.put("duration",duration);
                 snippet.put("viewCount", viewCount);
                 snippet.put("likeCount", likeCount);
+                snippet.put("description",description);
             }
             
             
@@ -116,12 +114,6 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (request.cached()) {
-            Log.d(TAG, "Cache hit");
-        } else {
-            Log.d(TAG, "Cache miss");
         }
 
         return builder.toString();

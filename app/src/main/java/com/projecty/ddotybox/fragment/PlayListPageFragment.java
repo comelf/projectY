@@ -27,6 +27,7 @@ import com.projecty.ddotybox.model.list.HomeVideolist;
 import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
 import com.projecty.ddotybox.task.GetPlayListPageAsyncTask;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -41,9 +42,6 @@ import java.util.List;
  * Created by LeeYoungNam on 3/25/15.
  */
 public class PlayListPageFragment extends Fragment implements View.OnClickListener {
-    private static final String YOUTUBE_PLAYLIST = "UUhQ-VMvdGrYZxviQVMTIOHd";
-    private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
-
     ListView mListView;
     private EtagCache mEtagCache;
     private PlaylistPageAdapter mAdapter;
@@ -87,7 +85,7 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mHomeVideolist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), HomeVideolist.class);
+            mHomeVideolist = new Gson().fromJson(savedInstanceState.getString(Global.YOUTUBE_PLAYLIST), HomeVideolist.class);
         }
 
         // ensure the adapter and listview are initialized
@@ -106,7 +104,7 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(async);
 
         return view;
@@ -115,14 +113,14 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         String json = new Gson().toJson(mHomeVideolist);
-        outState.putString(PLAYLIST_KEY, json);
+        outState.putString(Global.YOUTUBE_PLAYLIST, json);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -187,13 +185,14 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
     private void handleFavVideoResult(String result) {
         if(result.equals("success")){
             Toast.makeText(this.getActivity(),
-                    "성공", Toast.LENGTH_LONG).show();
+                    "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
             favBtn.setEnabled(false);
+            favBtn.setImageResource(R.drawable.button_favorite_off);
         }else if(result.equals("duplication")){
             Toast.makeText(this.getActivity(),
-                    "성공", Toast.LENGTH_LONG).show();
+                    "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
             favBtn.setEnabled(false);
-            favBtn.setAlpha((float)0.5);
+            favBtn.setImageResource(R.drawable.button_favorite_off);
         }else {
             Toast.makeText(this.getActivity(),
                     "서버에 연결할수 없습니다.", Toast.LENGTH_LONG).show();
@@ -298,7 +297,7 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
                     public void onPostExecute(JSONObject result) {
                         handlePlaylistResult(result);
                     }
-                }.execute(YOUTUBE_PLAYLIST, nextPageToken);
+                }.execute(Global.YOUTUBE_PLAYLIST, nextPageToken);
                 asyncTasks.add(async);
                 setIsLoading(true);
             }

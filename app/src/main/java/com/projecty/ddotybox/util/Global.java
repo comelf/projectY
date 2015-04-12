@@ -13,7 +13,10 @@ package com.projecty.ddotybox.util;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ApiKey {
-    public static final String YOUTUBE_API_KEY = "AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
+public class Global {
+    public static final String YOUTUBE_API_KEY  = "AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
+    public static final String SERVER           = "http://52.68.56.175";
+    public static final String CHANNEL_ID       = "UChQ-VMvdGrYZxviQVMTJOHg";
+    public static final String YOUTUBE_PLAYLIST = "UUhQ-VMvdGrYZxviQVMTJOHg";
 
 }

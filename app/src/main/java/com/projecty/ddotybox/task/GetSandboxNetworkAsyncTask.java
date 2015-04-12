@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
-import com.projecty.ddotybox.util.ApiKey;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +49,7 @@ public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void,
                 .appendQueryParameter("part", YOUTUBE_PLAYLIST_PART)
                 .appendQueryParameter("maxResults", Integer.toString(YOUTUBE_PLAYLIST_MAX_RESULTS))
                 .appendQueryParameter("fields", YOUTUBE_PLAYLIST_FIELDS)
-                .appendQueryParameter("key", ApiKey.YOUTUBE_API_KEY);
+                .appendQueryParameter("key", Global.YOUTUBE_API_KEY);
 
         Log.i(TAG, mUriBuilder.build().toString());
         final String result = doGetUrl(mUriBuilder.build().toString());

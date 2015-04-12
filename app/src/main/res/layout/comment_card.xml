@@ -2,12 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/comment_card"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="@color/background_white"
         android:orientation="horizontal"
         android:layout_marginBottom="1dp">
 
@@ -29,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="13dp"
-                android:textColor="#999999"
+                android:textColor="@color/text_main"
                 android:text="BROWN"
                 android:layout_marginBottom="8dp"/>
             <TextView
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3"
                 android:textSize="13dp"
-                android:textColor="#777777"
+                android:textColor="@color/text_sub"
                 android:text=""
                 android:layout_marginBottom="12dp"/>
 
@@ -81,7 +82,7 @@
                         android:layout_height="16dp"
                         android:textSize="12dp"
                         android:background="@android:color/transparent"
-                        android:text="999만"
+                        android:text=""
                         android:textColor="#bbbbbb"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"/>

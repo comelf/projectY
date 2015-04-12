@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ import java.io.InputStreamReader;
  */
 public class SetCommentAsyncTask extends AsyncTask<String, Void, JSONObject>{
 
-    private final String SERVER = "http://52.68.56.175/write_comment";
+    private final String PATH = "/write_comment";
     protected Uri.Builder mUriBuilder;
 
     @Override
@@ -31,7 +32,7 @@ public class SetCommentAsyncTask extends AsyncTask<String, Void, JSONObject>{
             return null;
         }
 
-        mUriBuilder = Uri.parse(SERVER).buildUpon();
+        mUriBuilder = Uri.parse(Global.SERVER +PATH).buildUpon();
         mUriBuilder.appendQueryParameter("user_id", userId)
                 .appendQueryParameter("video_id", vidroId)
                 .appendQueryParameter("commnet", content);

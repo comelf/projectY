@@ -2,11 +2,10 @@ package com.projecty.ddotybox.task;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
-import com.projecty.ddotybox.util.ApiKey;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,10 +50,8 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
                 .appendQueryParameter("part", YOUTUBE_PLAYLIST_PART)
                 .appendQueryParameter("maxResults", Integer.toString(YOUTUBE_PLAYLIST_MAX_RESULTS))
                 .appendQueryParameter("fields", YOUTUBE_PLAYLIST_FIELDS)
-                .appendQueryParameter("key", ApiKey.YOUTUBE_API_KEY);
+                .appendQueryParameter("key", Global.YOUTUBE_API_KEY);
 
-
-        Log.i(TAG, "Failed to get playlist");
         final String result = doGetUrl(mUriBuilder.build().toString());
         if (result == null) {
             return null;
@@ -69,14 +66,10 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
                 items = items + id + ",";
 //                Log.i(TAG, id);
             }
-            String api = "https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails&id=" + items + "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
+            String api = "https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails,snippet&id=" + items + "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
             Uri.Builder uriBuilder = Uri.parse(api).buildUpon();
             String result2 = doGetUrl(uriBuilder.build().toString());
             JSONObject itemInfo = new JSONObject(result2);
-
-            Log.i(TAG, api);
-            Log.i(TAG, result2);
-
 
             for (int i = 0; i < itemList.length() ; i++) {
                 JSONObject item = itemInfo.getJSONArray("items").getJSONObject(i);
@@ -85,10 +78,11 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
                 String duration = item.getJSONObject("contentDetails").getString("duration");
                 String viewCount = String.valueOf(item.getJSONObject("statistics").getLong("viewCount"));
                 String likeCount = String.valueOf(item.getJSONObject("statistics").getLong("likeCount"));
-
+                String description = item.getJSONObject("snippet").getString("description");
                 snippet.put("duration",duration);
                 snippet.put("viewCount", viewCount);
                 snippet.put("likeCount", likeCount);
+                snippet.put("description",description);
             }
 
 
@@ -121,12 +115,6 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (request.cached()) {
-            Log.d(TAG, "Cache hit");
-        } else {
-            Log.d(TAG, "Cache miss");
         }
 
         return builder.toString();

@@ -3,20 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6E9ED">
+    android:background="@color/background_gray"
+    android:clickable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#FFFFFF"
+        android:background="@color/background_white"
         android:layout_margin="10dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="인기검색어"
-            android:textColor="#555555"
+            android:textColor="@color/text_main"
             android:gravity="center"
             android:textSize="16dp"
             android:paddingTop="20dp"
@@ -39,7 +40,7 @@
                     android:text="마인크래프트"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -47,7 +48,7 @@
                     android:text="배틀로얄"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -55,7 +56,7 @@
                     android:text="건축 타임랩스"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -63,7 +64,7 @@
                     android:text="미니게임"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -71,7 +72,7 @@
                     android:text="서바이벌"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
             </LinearLayout>
             <LinearLayout
@@ -85,7 +86,7 @@
                     android:text="예술가 모드"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -93,7 +94,7 @@
                     android:text="클래시 오브 클랜"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
 
                 <TextView
@@ -102,7 +103,7 @@
                     android:text="모바일게임"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -110,7 +111,7 @@
                     android:text="블럭 라이더"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -118,17 +119,9 @@
                     android:text="대규모 직업 전쟁"
                     android:textSize="14dp"
                     android:gravity="center"
-                    android:textColor="#48CFAD"
+                    android:textColor="@color/theme_point"
                     android:padding="5dp"/>
             </LinearLayout>
-
-            </LinearLayout>
-
-
-
-
         </LinearLayout>
-
-
-
+    </LinearLayout>
 </LinearLayout>

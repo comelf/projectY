@@ -43,9 +43,6 @@ public class CommentslistAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-            if ( position == (getCount() - 1)) {
-                return mInflater.inflate(R.layout.null_comment_card, null, false);
-            }
 
         if (convertView == null || convertView.getTag() == null) {
             viewHolder = new ViewHolder();

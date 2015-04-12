@@ -28,6 +28,7 @@ import com.projecty.ddotybox.model.list.VideoItemlist;
 import com.projecty.ddotybox.task.GetHomeCoverlistAsyncTask;
 import com.projecty.ddotybox.task.GetRecommandlistAsyncTask;
 import com.projecty.ddotybox.util.CustomViewPagerAdapter;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -42,9 +43,6 @@ import java.util.List;
  * Created by byungwoo on 15. 4. 4..
  */
 public class RecommendFragment extends Fragment {
-
-
-    private static final String YOUTUBE_PLAYLIST = "UUhQ-VMvdGrYZxviQVMTJOHg";
     private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
     private EtagCache mEtagCache;
@@ -107,6 +105,8 @@ public class RecommendFragment extends Fragment {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        StatisticsItem item = getItem(position);
+//                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + item.videoId)));
                         moveFragement(position);
                     }
                 });
@@ -184,7 +184,7 @@ public class RecommendFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handleHomeResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(asyncOne);
 
         AsyncTask asyncTwo = new GetRecommandlistAsyncTask() {
@@ -197,7 +197,7 @@ public class RecommendFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(asyncTwo);
 
 
@@ -233,7 +233,7 @@ public class RecommendFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -388,7 +388,9 @@ public class RecommendFragment extends Fragment {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    moveFragement(position);
+//                    StatisticsItem item = getItem(position);
+//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + item.videoId)));
+                moveFragement(position);
                 }
             });
 

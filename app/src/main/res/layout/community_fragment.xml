@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="BOX의 놀라운 커뮤니티 기능이\n곧 여러분에게 찾아옵니다!"
                 android:layout_marginTop="16dp"
-                android:textColor="#999999"
+                android:textColor="@color/text_sub"
                 android:textSize="16dp"
                 android:gravity="center"/>
 

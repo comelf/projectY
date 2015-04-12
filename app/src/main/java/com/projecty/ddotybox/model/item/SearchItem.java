@@ -32,6 +32,7 @@ public class SearchItem extends StatisticsItem{
         date = snippet.getString("publishedAt").substring(0, 10);
         thumbnailUrl = snippet.getJSONObject("thumbnails").getJSONObject("medium").getString("url");
         videoId = jsonItem.getJSONObject("id").getString("videoId");
+        description = snippet.getString("description");
 
         duration = setDuration(snippet.getString("duration"));
         viewCount = convertCount(snippet.getString("viewCount"));

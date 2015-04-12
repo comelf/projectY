@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ddd">
+    android:background="#ddd"
+    android:clickable="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="1dp"
-            android:background="#FFFFFF"
+            android:background="@color/background_white"
             android:gravity="center">
             <ImageView
                 android:layout_width="96dp"
@@ -28,14 +29,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="1dp"
-            android:background="#FFFFFF">
+            android:background="@color/background_white">
             <TextView
 
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="이름"
                 android:textSize="16dp"
-                android:textColor="#d2d2d2"
+                android:textColor="@color/text_light_gray"
                 android:padding="20dp"/>
             <TextView
                 android:id="@+id/user_sandbox_id"
@@ -43,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:text="BROWN"
                 android:lines="1"
-                android:textColor="#48CFAD"
+                android:textColor="@color/theme_point"
                 android:textSize="16dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"/>
@@ -117,18 +118,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFFFFF">
-            <Button
-                android:id="@+id/user_save_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="4dp"
-                android:background="#48cfad"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textSize="16dp"
-                android:text="저장"/>
+            <!--<Button-->
+                <!--android:id="@+id/user_save_button"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:padding="4dp"-->
+                <!--android:background="#48cfad"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:textSize="16dp"-->
+                <!--android:text="저장"/>-->
             <Button
                 android:id="@+id/user_logout_button"
                 android:layout_width="match_parent"
@@ -137,6 +138,7 @@
                 android:padding="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:background="#48cfad"
                 android:textSize="16dp"
                 android:text="로그아웃"/>

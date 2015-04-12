@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +19,6 @@ import java.io.InputStreamReader;
  * Created by byungwoo on 15. 4. 8..
  */
 public abstract class GetFavoriteAsyncTask extends AsyncTask<String, Void, JSONObject> {
-    private static final String URL = "http://52.68.56.175";
     String path;
     int user_id;
     protected Uri.Builder mUriBuilder;
@@ -28,7 +28,7 @@ public abstract class GetFavoriteAsyncTask extends AsyncTask<String, Void, JSONO
         this.path = path;
         this.user_id = id;
         this.param = param;
-        mUriBuilder = Uri.parse(URL + path).buildUpon();
+        mUriBuilder = Uri.parse(Global.SERVER + path).buildUpon();
     }
 
     @Override

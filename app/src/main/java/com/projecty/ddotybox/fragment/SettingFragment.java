@@ -2,6 +2,7 @@ package com.projecty.ddotybox.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.projecty.ddotybox.R;
+import com.projecty.ddotybox.activity.GoogleLogin;
 import com.projecty.ddotybox.model.UserProfile;
 
 
@@ -54,9 +56,11 @@ public class SettingFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onDetach() {
+        super.onDetach();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+
     }
 
     @Override
@@ -111,9 +115,29 @@ public class SettingFragment extends Fragment implements GoogleApiClient.Connect
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
+//            mGoogleApiClient.connect();
         }
+        Intent intent = new Intent(getActivity(), GoogleLogin.class);
+                            startActivity(intent);
+                            getActivity().finish();
 
-        System.exit(0);
+//        System.exit(0);
     }
+
+//    private void revokeGplusAccess() {
+//        if (mGoogleApiClient.isConnected()) {
+//            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+//            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
+//                    .setResultCallback(new ResultCallback<Status>() {
+//                        @Override
+//                        public void onResult(Status arg0) {
+//                            mGoogleApiClient.connect();
+//                            Intent intent = new Intent(getActivity(), GoogleLogin.class);
+//                            startActivity(intent);
+//                            getActivity().finish();
+//                        }
+//
+//                    });
+//        }
+//    }
 }

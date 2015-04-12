@@ -27,6 +27,7 @@ import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.projecty.ddotybox.model.list.PlaylistFav;
 import com.projecty.ddotybox.model.list.VideoItemlist;
 import com.projecty.ddotybox.task.GetFavoriteAsyncTask;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -39,8 +40,6 @@ import java.text.ParseException;
  * Created by byungwoo on 15. 4. 8..
  */
 public class FavoriteFragment extends Fragment implements View.OnClickListener {
-    private static final String PLAYLIST_KEY1 = "FAVORITE_KEY";
-    private static final String YOUTUBE_PLAYLIST = "UUhQ-VMvdGrYZxviQDMTIOHd";
     ListView mListView;
     private EtagCache mEtagCache;
     private FavoriteAdapter mAdapter;
@@ -67,7 +66,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
         mListView = (ListView) view.findViewById(R.id.favorite_list_view);
 
         if (savedInstanceState != null) {
-            mVideolist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY1), VideoItemlist.class);
+            mVideolist = new Gson().fromJson(savedInstanceState.getString(Global.YOUTUBE_PLAYLIST), VideoItemlist.class);
         }
 
         if (mVideolist != null) {
@@ -96,7 +95,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
                 handleVideoResult(result);
             }
 
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
 
         return view;
     }
@@ -161,7 +160,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -197,7 +196,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
                         handleVideoResult(result);
                     }
 
-                }.execute(YOUTUBE_PLAYLIST, null);
+                }.execute(Global.YOUTUBE_PLAYLIST, null);
                 return;
             case R.id.fav_play_list_btn:
                 favPlayBtn.setBackgroundColor(Color.parseColor("#ED5565"));
@@ -213,7 +212,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
                     public void onPostExecute(JSONObject result) {
                         handlePlayResult(result);
                     }
-                }.execute(YOUTUBE_PLAYLIST, null);
+                }.execute(Global.YOUTUBE_PLAYLIST, null);
 
             return;
         }
@@ -306,6 +305,8 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    StatisticsItem item = getItem(position);
+//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + item.videoId)));
                     moveFragement(position);
                 }
             });

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dddddd">
+    android:background="@color/background_gray"
+    android:clickable="true">
 
     <com.projecty.util.CustomListView
         android:id="@+id/custom_list_v"

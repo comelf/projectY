@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.projecty.ddotybox.util.Global;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +15,6 @@ import java.io.InputStreamReader;
  * Created by byungwoo on 15. 4. 11..
  */
 public class AddFavoriteAsyncTask extends AsyncTask<String, Void, String> {
-    private final String SERVER = "http://52.68.56.175";
     protected Uri.Builder mUriBuilder;
 
     @Override
@@ -27,7 +27,7 @@ public class AddFavoriteAsyncTask extends AsyncTask<String, Void, String> {
             return null;
         }
 
-        mUriBuilder = Uri.parse(SERVER+path).buildUpon();
+        mUriBuilder = Uri.parse(Global.SERVER+path).buildUpon();
         mUriBuilder.appendQueryParameter("user_id", userId)
                 .appendQueryParameter("video_id",videoId);
 

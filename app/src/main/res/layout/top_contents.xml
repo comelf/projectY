@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/content_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:background="#000000"/>
+        android:background="@color/background_black"/>
 
     <View
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                 android:id="@+id/content_date"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
-                android:text="2015.01.01"
+                android:text=""
                 android:textAlignment="center"
                 android:textSize="12dp"
                 android:layout_marginLeft="5dp"
@@ -66,7 +67,7 @@
                     android:layout_height="20dp"
                     android:textSize="12dp"
                     android:background="@android:color/transparent"
-                    android:text="999만"
+                    android:text=""
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"/>
                 </LinearLayout>
@@ -93,7 +94,7 @@
                     android:layout_height="20dp"
                     android:textSize="12dp"
                     android:background="@android:color/transparent"
-                    android:text="999만"
+                    android:text=""
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"/>
                 </LinearLayout>

@@ -6,38 +6,26 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.github.kevinsawicki.etag.EtagCache;
 import com.projecty.ddotybox.R;
-import com.projecty.ddotybox.adapter.CommentslistAdapter;
+import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.StatisticsItem;
-import com.projecty.ddotybox.model.list.CommentList;
-import com.projecty.ddotybox.task.GetCommentListAsyncTask;
+import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParseException;
-
 public class SearchResultPageFragment extends Fragment implements View.OnClickListener{
-    ListView mListView;
-    private CommentslistAdapter mAdapter;
     private StatisticsItem item;
-    private EtagCache mEtagCache;
-    private static final String COMMENT_KEY = "COMMENT_KEY";
-    private CommentList commentList;
     private AsyncTask task;
-    private static final String YOUTUBE_PLAYLIST = "PLAYLIST_KEY";
+    private int userId;
+    ImageButton favoriteBtn;
 
     public void setItem(StatisticsItem item){
         this.item = item;
@@ -52,73 +40,31 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
         TextView like = (TextView) view.findViewById(R.id.video_like_i);
         TextView title = (TextView) view.findViewById(R.id.video_title_i);
         ImageButton playBtn = (ImageButton) view.findViewById(R.id.playButton);
-        ImageButton likeBtn = (ImageButton) view.findViewById(R.id.likeButton);
-        ImageButton favoriteBtn = (ImageButton) view.findViewById(R.id.favoriteButton);
+//        ImageButton likeBtn = (ImageButton) view.findViewById(R.id.likeButton);
+         favoriteBtn = (ImageButton) view.findViewById(R.id.favoriteButton);
+        TextView description = (TextView) view.findViewById(R.id.video_description);
 
         date.setText(item.date);
         play.setText(item.viewCount);
         like.setText(item.likeCount);
         title.setText(item.title);
+        description.setText(item.description);
+        Linkify.addLinks(description, Linkify.WEB_URLS);
 
+        userId = UserProfile.getStaticUserId();
         Picasso.with(getActivity())
                 .load(item.thumbnailUrl)
                 .into(imageView);
 
         playBtn.setOnClickListener(this);
-
-
-        mListView = (ListView) view.findViewById(R.id.commentsListview);
-
-        task = new GetCommentListAsyncTask() {
-            @Override
-            public EtagCache getEtagCache() {
-                return mEtagCache;
-            }
-
-            @Override
-            public void onPostExecute(JSONObject result) {
-                handletResult(result);
-            }
-        }.execute(COMMENT_KEY,item.videoId, null);
+        favoriteBtn.setOnClickListener(this);
 
         return view;
-    }
-
-    private void handletResult(JSONObject result) {
-        try {
-            if (commentList == null) {
-                commentList = new CommentList(result);
-                initListAdapter(commentList);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initListAdapter(CommentList commentList) {
-        mAdapter = new CommentslistAdapter(commentList,getLayoutInflater(null));
-
-        if(mListView==null){
-            Log.v("DEBUG", "LIST View IS NULL!!");
-        }
-
-        if(mAdapter==null){
-            Log.v("DEBUG", "Adapter IS NULL!!");
-        }
-
-
-        mListView.setAdapter(mAdapter);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
-        mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
     @Override
     public void onClick(View v) {
@@ -129,7 +75,18 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
             case R.id.likeButton:
                 break;
             case R.id.favoriteButton:
+                if(userId<1){
+                    Toast.makeText(this.getActivity(),
+                            "로그인을 해주세요.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                task = new AddFavoriteAsyncTask(){
+                    @Override
+                    public void onPostExecute(String result) {
+                        handleFavVideoResult(result);
+                    }
 
+                }.execute("/add_favorite_video",item.videoId,String.valueOf(userId), null);
                 break;
         }
     }
@@ -143,4 +100,20 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
 
     }
 
+    private void handleFavVideoResult(String result) {
+        if(result.equals("success")){
+            Toast.makeText(this.getActivity(),
+                    "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
+            favoriteBtn.setEnabled(false);
+            favoriteBtn.setImageResource(R.drawable.button_favorite_off);
+        }else if(result.equals("duplication")){
+            Toast.makeText(this.getActivity(),
+                    "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
+            favoriteBtn.setEnabled(false);
+            favoriteBtn.setImageResource(R.drawable.button_favorite_off);
+        }else {
+            Toast.makeText(this.getActivity(),
+                    "서버에 연결할수 없습니다.", Toast.LENGTH_LONG).show();
+        }
+    }
 }

@@ -8,16 +8,15 @@ import java.util.regex.Pattern;
  * Created by byungwoo on 15. 4. 10..
  */
 public class StatisticsItem {
-    public  String id;
-    public  String title;
-    public  String date;
-    public  String thumbnailUrl;
-    public  String videoId;
-
-
-    public  String duration;
-    public  String likeCount;
-    public  String viewCount;
+    public String id;
+    public String title;
+    public String date;
+    public String thumbnailUrl;
+    public String videoId;
+    public String description;
+    public String duration;
+    public String likeCount;
+    public String viewCount;
 
     public String convertCount(String num){
         String result = num;

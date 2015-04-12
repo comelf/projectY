@@ -19,6 +19,7 @@ import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.projecty.ddotybox.model.list.HomeVideolist;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
 import com.projecty.ddotybox.util.CustomListView;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -26,22 +27,19 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by byungwoo on 15. 4. 5..
  */
 public class AdFragment extends Fragment {
-
-    private static final String YOUTUBE_PLAYLIST = "UUhQ-VMvdGrYZxviQVMTJOHg";
-    private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private EtagCache mEtagCache;
     private CustomListView listView;
     private PlaylistAdapter mAdapter;
     private HomeVideolist mHomeVideolist;
     private HomeVideolist rVideolist;
-    private AsyncTask asyncOne;
-    private AsyncTask asyncTwo;
-    ///Async 처리 해야됨!!!!!!
+    private List<AsyncTask> asyncs  = new ArrayList<AsyncTask>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +53,7 @@ public class AdFragment extends Fragment {
             initListAdapter(mHomeVideolist);
         }
 
-        asyncOne = new GetVideolistAsyncTask() {
+        AsyncTask async = new GetVideolistAsyncTask() {
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -65,8 +63,8 @@ public class AdFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
-
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
+        asyncs.add(async);
 
 
         return root;
@@ -119,15 +117,17 @@ public class AdFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        asyncOne.cancel(true);
-        asyncTwo.cancel(true);
+        for(AsyncTask task : asyncs){
+            task.cancel(true);
+        }
+
 
     }
 
@@ -234,7 +234,7 @@ public class AdFragment extends Fragment {
                     public void onPostExecute(JSONObject result) {
                         handlePlaylistResult(result);
                     }
-                }.execute(YOUTUBE_PLAYLIST, nextPageToken);
+                }.execute(Global.YOUTUBE_PLAYLIST, nextPageToken);
 
                 setIsLoading(true);
             }

@@ -29,6 +29,7 @@ import com.projecty.ddotybox.model.list.VideoItemlist;
 import com.projecty.ddotybox.task.GetHomeCoverlistAsyncTask;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
 import com.projecty.ddotybox.util.CustomViewPagerAdapter;
+import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -41,8 +42,6 @@ import java.util.List;
 
 public class VideoFragment extends Fragment {
 
-    private static final String YOUTUBE_PLAYLIST = "UUhQ-VMvdGrYZxviQVMTJOHg";
-    private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
     private EtagCache mEtagCache;
     private HomeVideolist mHomeVideolist;
@@ -66,6 +65,7 @@ public class VideoFragment extends Fragment {
             public int getItemPosition(Object object) {
                 return POSITION_NONE;
             }
+
             @Override
             public View getView(final int position, ViewPager pager) {
                 Context c = pager.getContext();
@@ -152,7 +152,7 @@ public class VideoFragment extends Fragment {
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mHomeVideolist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), HomeVideolist.class);
+            mHomeVideolist = new Gson().fromJson(savedInstanceState.getString(Global.YOUTUBE_PLAYLIST), HomeVideolist.class);
         }
 
         // ensure the adapter and listview are initialized
@@ -171,7 +171,7 @@ public class VideoFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(YOUTUBE_PLAYLIST, null);
+        }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(asyncOne);
         AsyncTask asyncTwo = new GetHomeCoverlistAsyncTask() {
                 @Override
@@ -182,7 +182,7 @@ public class VideoFragment extends Fragment {
                 public EtagCache getEtagCache() {
                     return mEtagCache;
                 }
-            }.execute(YOUTUBE_PLAYLIST, null);
+            }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(asyncTwo);
         return rootView;
     }
@@ -229,14 +229,14 @@ public class VideoFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         String json = new Gson().toJson(mHomeVideolist);
-        outState.putString(PLAYLIST_KEY, json);
+        outState.putString(Global.YOUTUBE_PLAYLIST, json);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
@@ -313,6 +313,11 @@ public class VideoFragment extends Fragment {
             return i;
         }
 
+
+
+        /*
+            상세보기 향후 구현 예정
+         */
         private void moveFragement(int position){
             VideoPageFragment fr = new VideoPageFragment();
             fr.setItem(getItem(position));
@@ -382,7 +387,7 @@ public class VideoFragment extends Fragment {
                     public void onPostExecute(JSONObject result) {
                         handlePlaylistResult(result);
                     }
-                }.execute(YOUTUBE_PLAYLIST, nextPageToken);
+                }.execute(Global.YOUTUBE_PLAYLIST, nextPageToken);
                 asyncTasks.add(async);
                 setIsLoading(true);
             }

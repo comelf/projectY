@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
+import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,19 +22,12 @@ import java.io.InputStreamReader;
 public abstract class GetHomeCoverlistAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected Uri.Builder mUriBuilder;
     private static final String TAG = "GetRecommandlistAsyncTask";
-
-    private String url = "http://52.68.56.175/get_homecover";
     private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=";
-
-
-    public GetHomeCoverlistAsyncTask() {
-
-    }
-
+    private String PATH = "/get_homecover";
 
     @Override
     protected JSONObject doInBackground(String... params) {
-        Uri.Builder builder = Uri.parse(url).buildUpon();
+        Uri.Builder builder = Uri.parse(Global.SERVER +PATH).buildUpon();
         JSONObject recommend = doGetJsonFromUrl(builder.build().toString());
         String video_list = "";
 
@@ -73,7 +67,7 @@ public abstract class GetHomeCoverlistAsyncTask extends AsyncTask<String, Void, 
     }
 
     private JSONObject doGetJsonFromUrl(String s) {
-        CacheRequest request = CacheRequest.get(url, getEtagCache());
+        CacheRequest request = CacheRequest.get(Global.SERVER +PATH, getEtagCache());
 
         StringBuilder builder = new StringBuilder();
         InputStream is = request.stream();
@@ -85,12 +79,6 @@ public abstract class GetHomeCoverlistAsyncTask extends AsyncTask<String, Void, 
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (request.cached()) {
-            Log.d(TAG, "Cache hit");
-        } else {
-            Log.d(TAG, "Cache miss");
         }
 
         String res =  builder.toString();

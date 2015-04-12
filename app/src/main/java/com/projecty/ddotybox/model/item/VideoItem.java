@@ -22,6 +22,8 @@ public class VideoItem extends StatisticsItem {
         date = snippet.getString("publishedAt").substring(0, 10);
         thumbnailUrl = snippet.getJSONObject("thumbnails").getJSONObject("medium").getString("url");
         videoId = jsonItem.getString("id");
+        description = snippet.getString("description");
+
         duration = setDuration(contentDetails.getString("duration"));
         viewCount = convertCount(statistics.getString("viewCount"));
         likeCount = convertCount(statistics.getString("likeCount"));
