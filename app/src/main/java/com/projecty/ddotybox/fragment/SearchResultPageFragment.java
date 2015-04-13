@@ -18,12 +18,18 @@ import android.widget.Toast;
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.StatisticsItem;
-import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
+import com.projecty.ddotybox.task.FavoriteAsyncTask;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchResultPageFragment extends Fragment implements View.OnClickListener{
     private StatisticsItem item;
-    private AsyncTask task;
+    private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
     private int userId;
     ImageButton favoriteBtn;
 
@@ -59,7 +65,29 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
         playBtn.setOnClickListener(this);
         favoriteBtn.setOnClickListener(this);
 
+        AsyncTask task = new FavoriteAsyncTask(){
+            @Override
+            public void onPostExecute(String result) {
+                handleCheckResult(result);
+            }
+
+        }.execute("/check_favorite_video",item.videoId,String.valueOf(userId), null);
+        asyncTasks.add(task);
+
+
         return view;
+    }
+
+    private void handleCheckResult(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            Boolean res = jsonObject.getBoolean("result");
+            if(res){
+                favoriteBtn.setImageResource(R.drawable.button_favorite_off);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -80,13 +108,14 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
                             "로그인을 해주세요.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                task = new AddFavoriteAsyncTask(){
+                AsyncTask task = new FavoriteAsyncTask(){
                     @Override
                     public void onPostExecute(String result) {
                         handleFavVideoResult(result);
                     }
 
                 }.execute("/add_favorite_video",item.videoId,String.valueOf(userId), null);
+                asyncTasks.add(task);
                 break;
         }
     }
@@ -94,7 +123,7 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
     @Override
     public void onDetach() {
         super.onDetach();
-        if(task!=null){
+        for(AsyncTask task : asyncTasks){
             task.cancel(true);
         }
 
@@ -104,13 +133,11 @@ public class SearchResultPageFragment extends Fragment implements View.OnClickLi
         if(result.equals("success")){
             Toast.makeText(this.getActivity(),
                     "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
-            favoriteBtn.setEnabled(false);
             favoriteBtn.setImageResource(R.drawable.button_favorite_off);
         }else if(result.equals("duplication")){
             Toast.makeText(this.getActivity(),
-                    "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
-            favoriteBtn.setEnabled(false);
-            favoriteBtn.setImageResource(R.drawable.button_favorite_off);
+                    "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_LONG).show();
+            favoriteBtn.setImageResource(R.drawable.button_favorite_on);
         }else {
             Toast.makeText(this.getActivity(),
                     "서버에 연결할수 없습니다.", Toast.LENGTH_LONG).show();

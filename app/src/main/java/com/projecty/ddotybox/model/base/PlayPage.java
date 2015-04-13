@@ -1,7 +1,5 @@
 package com.projecty.ddotybox.model.base;
 
-import com.projecty.ddotybox.model.item.PlaylistItem;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +34,7 @@ public abstract class PlayPage {
 
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject item = jsonItems.getJSONObject(i);
-            items.add(new PlaylistItem(item));
+            items.add(getPlayItem(item));
         }
     }
 

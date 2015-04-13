@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -165,8 +164,7 @@ public class GoogleLogin extends Activity implements OnClickListener,
                 user.login();
 
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "Person information is null", Toast.LENGTH_LONG).show();
+
             }
         } catch (Exception e) {
             e.printStackTrace();

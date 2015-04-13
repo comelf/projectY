@@ -24,7 +24,7 @@ import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.model.base.PlayItem;
 import com.projecty.ddotybox.model.base.StatisticsItem;
 import com.projecty.ddotybox.model.list.HomeVideolist;
-import com.projecty.ddotybox.task.AddFavoriteAsyncTask;
+import com.projecty.ddotybox.task.FavoriteAsyncTask;
 import com.projecty.ddotybox.task.GetPlayListPageAsyncTask;
 import com.projecty.ddotybox.task.GetVideolistAsyncTask;
 import com.projecty.ddotybox.util.Global;
@@ -107,7 +107,29 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
         }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(async);
 
+        AsyncTask task = new FavoriteAsyncTask(){
+            @Override
+            public void onPostExecute(String result) {
+                handleCheckResult(result);
+            }
+
+        }.execute("/check_favorite_playlist",item_play.id, String.valueOf(userId), null);
+        asyncTasks.add(task);
+
+
         return view;
+    }
+
+    private void handleCheckResult(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            Boolean res = jsonObject.getBoolean("result");
+            if(res){
+                favBtn.setImageResource(R.drawable.button_favorite_off);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -170,7 +192,7 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
                             "로그인을 해주세요.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                AsyncTask like = new AddFavoriteAsyncTask(){
+                AsyncTask like = new FavoriteAsyncTask(){
                     @Override
                     public void onPostExecute(String result) {
                         handleFavVideoResult(result);
@@ -186,13 +208,11 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
         if(result.equals("success")){
             Toast.makeText(this.getActivity(),
                     "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
-            favBtn.setEnabled(false);
             favBtn.setImageResource(R.drawable.button_favorite_off);
         }else if(result.equals("duplication")){
             Toast.makeText(this.getActivity(),
-                    "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show();
-            favBtn.setEnabled(false);
-            favBtn.setImageResource(R.drawable.button_favorite_off);
+                    "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_LONG).show();
+            favBtn.setImageResource(R.drawable.button_favorite_on);
         }else {
             Toast.makeText(this.getActivity(),
                     "서버에 연결할수 없습니다.", Toast.LENGTH_LONG).show();
@@ -279,9 +299,6 @@ public class PlayListPageFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + item.videoId + "&list=" + item_play.id)));
-
-
-
                 }
             });
 

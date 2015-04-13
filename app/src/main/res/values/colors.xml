@@ -14,10 +14,10 @@
     <color name="text_light_gray">#d9dadc</color>
     <color name="text_white">#ffffff</color>
 
-
+    <color name="theme_color1">#DA4453</color>
     <color name="theme_color2">#ED5565</color>
     <color name="theme_point">#48CFAD</color>
-
+    <color name="theme_button">#48cfad</color>
 
 
 

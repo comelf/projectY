@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 /**
  * Created by byungwoo on 15. 4. 11..
  */
-public class AddFavoriteAsyncTask extends AsyncTask<String, Void, String> {
+public class FavoriteAsyncTask extends AsyncTask<String, Void, String> {
     protected Uri.Builder mUriBuilder;
 
     @Override

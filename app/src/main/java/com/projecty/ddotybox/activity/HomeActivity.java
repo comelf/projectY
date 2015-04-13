@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +20,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.fragment.BjLogFragment;
@@ -236,7 +233,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         List<Button> buttons = new ArrayList<Button>();
         buttons.add((Button) findViewById(R.id.settingButton));
         buttons.add((Button) findViewById(R.id.inviteButton));
-        buttons.add((Button) findViewById(R.id.readButton));
+//        buttons.add((Button) findViewById(R.id.readButton));
         buttons.add((Button) findViewById(R.id.homeButton));
         buttons.add((Button) findViewById(R.id.favoriteButton));
         buttons.add((Button) findViewById(R.id.featuredButton));
@@ -277,12 +274,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
                 break;
-            case R.id.readButton:
-                Toast toast2 = Toast.makeText(getApplicationContext(),
-                        "준비중입니다.", Toast.LENGTH_SHORT);
-                toast2.setGravity(Gravity.CENTER, 0, 0);
-                toast2.show();
-                break;
+//            case R.id.readButton:
+//                Toast toast2 = Toast.makeText(getApplicationContext(),
+//                        "준비중입니다.", Toast.LENGTH_SHORT);
+//                toast2.setGravity(Gravity.CENTER, 0, 0);
+//                toast2.show();
+//                break;
             case R.id.homeButton:
                 toolbar.setTitle("홈");
                 setLayoutBackgroundColor(HOME_LAYOUT);
@@ -396,10 +393,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     }
 
      private void setLayoutBackgroundColor(int layout_id){
-           for(FrameLayout layout : layoutList){
-               layout.setBackgroundColor(Color.parseColor("#656D78"));
-           }
-           layoutList.get(layout_id).setBackgroundColor(Color.parseColor("#ED5565"));
+         for(FrameLayout layout : layoutList){
+             layout.setBackgroundResource(R.color.drawer_background);
+         }
+         layoutList.get(layout_id).setBackgroundResource(R.color.theme_color2);
     }
 
     private void setLayoutList() {

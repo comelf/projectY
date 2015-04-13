@@ -1,7 +1,6 @@
 package com.projecty.ddotybox.fragment;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,6 +39,10 @@ import java.text.ParseException;
  * Created by byungwoo on 15. 4. 8..
  */
 public class FavoriteFragment extends Fragment implements View.OnClickListener {
+    private static final int FAV_VIDEO_LIST = 1;
+    private static final int FAV_PALY_LIST = 2;
+    private int currentButtonState;
+
     ListView mListView;
     private EtagCache mEtagCache;
     private FavoriteAdapter mAdapter;
@@ -55,7 +58,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.favorite_fragment, container, false);
-
+        currentButtonState = FAV_VIDEO_LIST;
 
         favVideoBtn = (Button) view.findViewById(R.id.fav_video_list_btn);
         favPlayBtn = (Button) view.findViewById(R.id.fav_play_list_btn);
@@ -175,48 +178,73 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()){
             case R.id.fav_video_list_btn:
-                favVideoBtn.setBackgroundColor(Color.parseColor("#ED5565"));
-                favVideoBtn.setTextColor(Color.parseColor("#FFFFFF"));
-                favPlayBtn.setBackgroundColor(Color.parseColor("#F5F7FA"));
-                favPlayBtn.setTextColor(Color.parseColor("#000000"));
-                aVideo = new GetFavoriteAsyncTask("/get_favorite_videolist","video_list", user_id){
-                    @Override
-                    public EtagCache getEtagCache() {
-                        return mEtagCache;
-                    }
-
-                    @Override
-                    public void onPostExecute(JSONObject result) {
-
-                        handleVideoResult(result);
-                    }
-
-                }.execute(Global.YOUTUBE_PLAYLIST, null);
+                buttonSwitch(FAV_VIDEO_LIST);
                 return;
             case R.id.fav_play_list_btn:
-                favPlayBtn.setBackgroundColor(Color.parseColor("#ED5565"));
-                favPlayBtn.setTextColor(Color.parseColor("#FFFFFF"));
-                favVideoBtn.setBackgroundColor(Color.parseColor("#F5F7FA"));
-                favVideoBtn.setTextColor(Color.parseColor("#000000"));
-                aPlay = new GetFavoriteAsyncTask("/get_favorite_playlist","play_list",user_id) {
-                    @Override
-                    public EtagCache getEtagCache() {
-                        return mEtagCache;
-                    }
-                    @Override
-                    public void onPostExecute(JSONObject result) {
-                        handlePlayResult(result);
-                    }
-                }.execute(Global.YOUTUBE_PLAYLIST, null);
+                buttonSwitch(FAV_PALY_LIST);
 
-            return;
+                return;
         }
     }
+
+    private void buttonSwitch(int buttonId) {
+        if(currentButtonState == buttonId){
+            return;
+        }
+
+        if(aPlay!=null){
+            aPlay.cancel(true);
+        }
+
+        if(aVideo!=null){
+            aVideo.cancel(true);
+        }
+
+        if(buttonId==FAV_VIDEO_LIST){
+            currentButtonState = FAV_VIDEO_LIST;
+            favVideoBtn.setBackgroundResource(R.color.theme_color2);
+            favVideoBtn.setTextColor(getActivity().getResources().getColorStateList(R.color.text_white));
+            favPlayBtn.setBackgroundResource(R.color.background_white);
+            favPlayBtn.setTextColor(getActivity().getResources().getColorStateList(R.color.text_dark_gray));
+
+            aVideo = new GetFavoriteAsyncTask("/get_favorite_videolist","video_list", user_id){
+                @Override
+                public EtagCache getEtagCache() {
+                    return mEtagCache;
+                }
+
+                @Override
+                public void onPostExecute(JSONObject result) {
+
+                    handleVideoResult(result);
+                }
+
+            }.execute(Global.YOUTUBE_PLAYLIST, null);
+        }else {
+            currentButtonState = FAV_PALY_LIST;
+            favPlayBtn.setBackgroundResource(R.color.theme_color2);
+            favPlayBtn.setTextColor(getActivity().getResources().getColorStateList(R.color.text_white));
+            favVideoBtn.setBackgroundResource(R.color.background_white);
+            favVideoBtn.setTextColor(getActivity().getResources().getColorStateList(R.color.text_dark_gray));
+            aPlay = new GetFavoriteAsyncTask("/get_favorite_playlist","play_list",user_id) {
+                @Override
+                public EtagCache getEtagCache() {
+                    return mEtagCache;
+                }
+                @Override
+                public void onPostExecute(JSONObject result) {
+                    handlePlayResult(result);
+                }
+            }.execute(Global.YOUTUBE_PLAYLIST, null);
+        }
+    }
+
 
     private abstract static class FavoriteAdapter extends BaseAdapter {
 

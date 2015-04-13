@@ -2,7 +2,9 @@ package com.projecty.ddotybox.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,9 +25,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
+import com.projecty.ddotybox.model.base.PlayItem;
 import com.projecty.ddotybox.model.base.StatisticsItem;
+import com.projecty.ddotybox.model.list.PlaylistRec;
 import com.projecty.ddotybox.model.list.VideoItemlist;
-import com.projecty.ddotybox.task.GetHomeCoverlistAsyncTask;
 import com.projecty.ddotybox.task.GetRecommandlistAsyncTask;
 import com.projecty.ddotybox.util.CustomViewPagerAdapter;
 import com.projecty.ddotybox.util.Global;
@@ -43,16 +46,16 @@ import java.util.List;
  * Created by byungwoo on 15. 4. 4..
  */
 public class RecommendFragment extends Fragment {
-    private static final String PLAYLIST_KEY = "PLAYLIST_KEY";
     private ListView mListView;
     private EtagCache mEtagCache;
-    private VideoItemlist mVideolist;
     private VideoItemlist rVideolist;
-    private PlaylistAdapter mAdapter;
+    private PlaylistRec mPlaylistFav;
+    private PlaylistPageAdapter mAdapter;
     private ViewPager mViewPager;
     private CustomViewPagerAdapter pagerAdapter;
     private ImageView[] dots;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
+    private String play_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -166,15 +169,15 @@ public class RecommendFragment extends Fragment {
 
         // restore the playlist after an orientation change
         if (savedInstanceState != null) {
-            mVideolist = new Gson().fromJson(savedInstanceState.getString(PLAYLIST_KEY), VideoItemlist.class);
+            mPlaylistFav = new Gson().fromJson(savedInstanceState.getString(Global.YOUTUBE_PLAYLIST), PlaylistRec.class);
         }
 
         // ensure the adapter and listview are initialized
-        if (mVideolist != null) {
-            initListAdapter(mVideolist);
+        if (mPlaylistFav != null) {
+            initListAdapter(mPlaylistFav);
         }
 
-        AsyncTask asyncOne = new GetHomeCoverlistAsyncTask() {
+        AsyncTask async = new GetRecommandlistAsyncTask() {
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -182,23 +185,19 @@ public class RecommendFragment extends Fragment {
 
             @Override
             public void onPostExecute(JSONObject result) {
-                handleHomeResult(result);
+
+                try {
+                    play_id = result.getString("video_id");
+                    handleHomeResult(result.getJSONObject("cover_list"));
+                    handlePlaylistResult(result.getJSONObject("video_list"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }.execute(Global.YOUTUBE_PLAYLIST, null);
-        asyncTasks.add(asyncOne);
-
-        AsyncTask asyncTwo = new GetRecommandlistAsyncTask() {
-            @Override
-            public EtagCache getEtagCache() {
-                return mEtagCache;
-            }
-
-            @Override
-            public void onPostExecute(JSONObject result) {
-                handlePlaylistResult(result);
-            }
-        }.execute(Global.YOUTUBE_PLAYLIST, null);
-        asyncTasks.add(asyncTwo);
+        asyncTasks.add(async);
 
 
 
@@ -225,8 +224,6 @@ public class RecommendFragment extends Fragment {
 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        String json = new Gson().toJson(mVideolist);
-        outState.putString(PLAYLIST_KEY, json);
     }
 
     @Override
@@ -247,10 +244,12 @@ public class RecommendFragment extends Fragment {
 
     }
 
-    private void initListAdapter(VideoItemlist Videolist) {
-        mAdapter = new PlaylistAdapter(Videolist);
+    private void initListAdapter(PlaylistRec playlist) {
+        mAdapter = new PlaylistPageAdapter(playlist);
         mListView.setAdapter(mAdapter);
     }
+
+
 
     private void handleHomeResult(JSONObject result) {
         try {
@@ -275,19 +274,16 @@ public class RecommendFragment extends Fragment {
 
     private void handlePlaylistResult(JSONObject result) {
         try {
-            if (mVideolist == null) {
-                mVideolist = new VideoItemlist(result);
-                initListAdapter(mVideolist);
+            if (mPlaylistFav == null) {
+                mPlaylistFav = new PlaylistRec(result);
+                initListAdapter(mPlaylistFav);
             } else {
-                mVideolist.addPage(result);
+                mPlaylistFav.addPage(result);
             }
 
             if (!mAdapter.setIsLoading(false)) {
                 mAdapter.notifyDataSetChanged();
             }
-            mAdapter.notifyDataSetChanged();
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -300,13 +296,13 @@ public class RecommendFragment extends Fragment {
         return (int) (dimensionDp * density + 0.5f);
     }
 
-    protected class PlaylistAdapter extends BaseAdapter {
+    protected class PlaylistPageAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
-        private VideoItemlist mVideolist;
+        private PlaylistRec mPlaylistFav;
         private boolean mIsLoading = false;
 
-        PlaylistAdapter(VideoItemlist Videolist) {
-            mVideolist = Videolist;
+        PlaylistPageAdapter(PlaylistRec playlistRec) {
+            mPlaylistFav = playlistRec;
             mInflater = getLayoutInflater(null);
         }
 
@@ -322,12 +318,12 @@ public class RecommendFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return mVideolist.getCount() + (mIsLoading ? 1 : 0);
+            return mPlaylistFav.getCount() + (mIsLoading ? 1 : 0);
         }
 
         @Override
-        public StatisticsItem getItem(int i) {
-            return mVideolist.getItem(i );
+        public PlayItem getItem(int i) {
+            return mPlaylistFav.getItem(i);
         }
 
         @Override
@@ -335,17 +331,7 @@ public class RecommendFragment extends Fragment {
             return i;
         }
 
-        private void moveFragement(int position) {
-            DetailPageFragment fr = new DetailPageFragment();
-            fr.setItem(getItem(position));
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-            fragmentTransaction.add(R.id.container, fr);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup viewGroup) {
@@ -356,31 +342,26 @@ public class RecommendFragment extends Fragment {
             }
             if (convertView == null || convertView.getTag() == null) {
                 viewHolder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.youtube_video_list_item, null, false);
+                convertView = mInflater.inflate(R.layout.recommend_list_item, null, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.video_title);
                 viewHolder.date = (TextView) convertView.findViewById(R.id.video_date);
                 viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.video_thumbnail);
                 viewHolder.duration = (TextView) convertView.findViewById(R.id.duration);
-                viewHolder.viewCount = (TextView) convertView.findViewById(R.id.playButton);
-                viewHolder.likeCount = (TextView) convertView.findViewById(R.id.likeButton);
                 convertView.setTag(viewHolder);
 
             }
 
             viewHolder = (ViewHolder) convertView.getTag();
 
-            final StatisticsItem item = getItem(position);
+            final PlayItem play_item = getItem(position);
+
             Typeface custom_font = Typeface.createFromAsset(convertView.getContext().getAssets(), "NotoSans.otf");
             viewHolder.title.setTypeface(custom_font);
-
-            viewHolder.title.setText(item.title);
-            viewHolder.date.setText(item.date);
-            viewHolder.duration.setText(item.duration);
-            viewHolder.viewCount.setText(item.viewCount);
-            viewHolder.likeCount.setText(item.likeCount);
+            viewHolder.title.setText(play_item.title);
+            viewHolder.date.setText(play_item.date);
 
             Picasso.with(getActivity())
-                    .load(item.thumbnailUrl)
+                    .load(play_item.thumbnailUrl)
                     .into(viewHolder.thumbnail);
 
 
@@ -388,12 +369,10 @@ public class RecommendFragment extends Fragment {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    StatisticsItem item = getItem(position);
-//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + item.videoId)));
-                moveFragement(position);
+                    String url = "https://www.youtube.com/watch?v=" + play_item.id + "&list=" + play_id;
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + play_item.id + "&list=" + play_id)));
                 }
             });
-
 
 
             return convertView;
@@ -411,10 +390,9 @@ public class RecommendFragment extends Fragment {
             TextView title;
             TextView date;
             TextView duration;
-            TextView viewCount;
-            TextView likeCount;
 
         }
+
     }
 
 }

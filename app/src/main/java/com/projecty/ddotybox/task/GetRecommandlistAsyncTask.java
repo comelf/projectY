@@ -21,36 +21,41 @@ import java.io.InputStreamReader;
 public abstract class GetRecommandlistAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected Uri.Builder mUriBuilder;
     private String PATH = "/get_recommend";
-    private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=";
+    private static final String YOUTUBE_VIDEOLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=";
+    private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=";
+    private static final String YOUTUBE_KEY = "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
 
     @Override
     protected JSONObject doInBackground(String... params) {
         Uri.Builder builder = Uri.parse(Global.SERVER +PATH).buildUpon();
         JSONObject recommend = doGetJsonFromUrl(builder.build().toString());
-        String video_list = "";
+        String play_list = "";
+        String cover_list = "";
 
         if(recommend==null){
             return null;
         }
 
         try {
-            video_list = recommend.getString("cover_list");
+            play_list = recommend.getString("video_list");
+            cover_list = recommend.getString("cover_list");
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
 
-        String url  = YOUTUBE_PLAYLISTITEMS_URL+video_list+"&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
+        String play_list_url  = YOUTUBE_PLAYLISTITEMS_URL+play_list+YOUTUBE_KEY;
+        String cover_list_url  = YOUTUBE_VIDEOLISTITEMS_URL+cover_list+YOUTUBE_KEY;
 
-
-        final String result = doGetUrl(url);
-        if (result == null) {
-            return null;
-        }
+        final String result_play = doGetUrl(play_list_url);
+        final String result_cover = doGetUrl(cover_list_url);
 
         JSONObject jsonObject;
         try {
-            jsonObject = new JSONObject(result);
+            jsonObject = new JSONObject();
+            jsonObject.put("video_list",new JSONObject(result_play));
+            jsonObject.put("cover_list",new JSONObject(result_cover));
+            jsonObject.put("video_id", play_list);
 
         } catch (JSONException e) {
             e.printStackTrace();
