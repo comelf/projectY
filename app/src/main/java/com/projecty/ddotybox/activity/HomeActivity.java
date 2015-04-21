@@ -379,7 +379,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj7:
                 toolbar.setTitle("찬이 BOX");
-                setLayoutBackgroundColor(BJ6_LAYOUT);
+                setLayoutBackgroundColor(BJ7_LAYOUT);
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
