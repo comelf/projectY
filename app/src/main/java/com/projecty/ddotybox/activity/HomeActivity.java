@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,6 +76,40 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     LinearLayout drawer;
 
     public UserProfile user;
+
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent event)
+    {
+
+        int num = getSupportFragmentManager().getBackStackEntryCount();
+        if(num ==0 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        {
+            // 팝업을 띄움
+
+            AlertDialog dialog;
+            dialog = new AlertDialog.Builder(this)
+                    // .setIcon(R.drawable.warning)
+                    .setMessage("종료하시겠습니까?")
+                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
+                            //dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,7 +364,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
                 fr1.setSandboxId("UUg7rkxrTnIhiHEpXY1ec9NA");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr1).addToBackStack(null)
+                        .replace(R.id.container, fr1).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj2:
@@ -338,7 +373,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
                 fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr2).addToBackStack(null)
+                        .replace(R.id.container, fr2).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj3:
@@ -347,7 +382,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
                 fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr3).addToBackStack(null)
+                        .replace(R.id.container, fr3).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj4:
@@ -356,7 +391,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
                 fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr4).addToBackStack(null)
+                        .replace(R.id.container, fr4).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj5:
@@ -365,7 +400,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
                 fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr5).addToBackStack(null)
+                        .replace(R.id.container, fr5).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj6:
@@ -374,7 +409,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
                 fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr6).addToBackStack(null)
+                        .replace(R.id.container, fr6).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj7:
@@ -383,7 +418,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr7).addToBackStack(null)
+                        .replace(R.id.container, fr7).addToBackStack(null)
                         .commit();
                 break;
 
