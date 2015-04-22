@@ -17,14 +17,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public abstract class GetSandboxNetworkAsyncTask extends AsyncTask<String, Void, JSONObject> {
+/**
+ * Created by byungwoo on 15. 4. 8..
+ */
+public abstract class GetSandboxVideoAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private static final String TAG = "GetPlaylistAsyncTask";
 
     private static final int YOUTUBE_PLAYLIST_MAX_RESULTS = 10;
     private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/playlistItems";
     private final String YOUTUBE_PLAYLIST_FIELDS = "etag,pageInfo,nextPageToken,items(id, snippet(title,position,publishedAt, thumbnails(medium,high),resourceId/videoId))";
     private final String YOUTUBE_PLAYLIST_PART ="snippet";
-    public GetSandboxNetworkAsyncTask() {
+    public GetSandboxVideoAsyncTask() {
 
         mUriBuilder = Uri.parse(YOUTUBE_PLAYLISTITEMS_URL).buildUpon();
     }

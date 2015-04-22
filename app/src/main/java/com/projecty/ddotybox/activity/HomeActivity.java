@@ -363,6 +363,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ1_LAYOUT);
                 SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
                 fr1.setSandboxId("UUg7rkxrTnIhiHEpXY1ec9NA");
+                fr1.setSandboxCh("UCg7rkxrTnIhiHEpXY1ec9NA");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr1).addToBackStack(null)
                         .commit();
@@ -372,6 +373,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ2_LAYOUT);
                 SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
                 fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
+                fr2.setSandboxCh("UCtCnnCUn9IDDQRU9_04JD3g");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr2).addToBackStack(null)
                         .commit();
@@ -381,6 +383,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ3_LAYOUT);
                 SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
                 fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
+                fr3.setSandboxCh("UCEPuItFWOOJ2o5hTu65NlEg");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr3).addToBackStack(null)
                         .commit();
@@ -390,6 +393,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ4_LAYOUT);
                 SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
                 fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
+                fr4.setSandboxCh("UCxmBxNybpaLO7x61dm0oD8w");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr4).addToBackStack(null)
                         .commit();
@@ -399,6 +403,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ5_LAYOUT);
                 SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
                 fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
+                fr5.setSandboxCh("UCT_Sf9z6Cqy11VHOfbnQPNQ");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr5).addToBackStack(null)
                         .commit();
@@ -408,6 +413,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ6_LAYOUT);
                 SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
                 fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
+                fr6.setSandboxCh("UCiwOunGuqfKjcLIBsteAAJQ");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr6).addToBackStack(null)
                         .commit();
@@ -417,6 +423,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 setLayoutBackgroundColor(BJ7_LAYOUT);
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
+                fr7.setSandboxCh("UCt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr7).addToBackStack(null)
                         .commit();
