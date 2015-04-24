@@ -130,7 +130,8 @@ public class SearchResultFragment extends Fragment {
             if (mVideolist == null) {
                 mVideolist = new SearchVideolist(result);
                 initListAdapter(mVideolist);
-            } else {
+            }
+            else {
                 mVideolist.addPage(result);
                 if (!mAdapter.setIsLoading(false)) {
                     mAdapter.notifyDataSetChanged();
@@ -240,7 +241,7 @@ public class SearchResultFragment extends Fragment {
 
 //            final String nextPageToken = mVideolist.getNextPageToken(position);
 //            if (!isEmpty(nextPageToken) && position == getCount() - 1) {
-//                AsyncTask async = new GetVideolistAsyncTask() {
+//                AsyncTask async = new GetSearchlistAsyncTask() {
 //                    @Override
 //                    public EtagCache getEtagCache() {
 //                        return mEtagCache;
@@ -250,7 +251,7 @@ public class SearchResultFragment extends Fragment {
 //                    public void onPostExecute(JSONObject result) {
 //                        handlePlaylistResult(result);
 //                    }
-//                }.execute(YOUTUBE_PLAYLIST, nextPageToken);
+//                }.execute(Global.YOUTUBE_PLAYLIST, query, nextPageToken);
 //                asyncTasks.add(async);
 //                setIsLoading(true);
 //            }

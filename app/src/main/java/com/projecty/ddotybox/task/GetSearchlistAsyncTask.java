@@ -37,6 +37,13 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
             }
         }
 
+//        if (params.length == 3) {
+//            final String nextPageToken = params[2];
+//            if (nextPageToken != null) {
+//                mUriBuilder.appendQueryParameter("pageToken", nextPageToken);
+//            }
+//        }
+
         mUriBuilder = Uri.parse(URL_BASE).buildUpon();
         mUriBuilder.appendQueryParameter("part", "snippet")
                 .appendQueryParameter("q", query)

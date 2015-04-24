@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.etag.EtagCache;
+import com.google.gson.Gson;
 import com.projecty.ddotybox.R;
 import com.projecty.ddotybox.model.base.BjLog;
 import com.projecty.ddotybox.model.list.Loglist;
@@ -43,6 +44,12 @@ public class BjLogFragment extends Fragment {
         View view = inflater.inflate(R.layout.bj_log, container, false);
         listView = (ListView) view.findViewById(R.id.log);
 
+        if (savedInstanceState != null) {
+            loglist = new Gson().fromJson(savedInstanceState.getString("log"), Loglist.class);
+        }
+        if (loglist != null){
+            initListAdapter(loglist);
+        }
 
         // start loading the first page of our playlist
          async = new GetBjLogAsyncTask() {
@@ -58,6 +65,11 @@ public class BjLogFragment extends Fragment {
         }.execute(LOG_KEY, null);
 
         return view;
+    }
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String json = new Gson().toJson(loglist);
+        outState.putString("log", json);
     }
 
     private void handlePlaylistResult(JSONObject result) {

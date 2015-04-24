@@ -29,7 +29,6 @@ import com.projecty.ddotybox.model.list.CrewVideolist;
 import com.projecty.ddotybox.model.list.PlaylistFav;
 import com.projecty.ddotybox.task.GetSandboxPlaylistAsyncTask;
 import com.projecty.ddotybox.task.GetSandboxVideoAsyncTask;
-import com.projecty.ddotybox.util.Global;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -64,7 +63,6 @@ public class SandboxNetworkFragment extends Fragment implements View.OnClickList
     Button favPlayBtn;
 
     int user_id =-1;
-
     public void setSandboxId(String playKey) {
         this.youtube_playlist = playKey;
     }
@@ -211,7 +209,7 @@ public class SandboxNetworkFragment extends Fragment implements View.OnClickList
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), youtube_playlist);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 
