@@ -23,7 +23,8 @@ public abstract class PlayPage {
 
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject item = jsonItems.getJSONObject(i);
-            items.add(getPlayItem(item));
+            PlayItem playItem = getPlayItem(item);
+            items.add(playItem);
         }
     }
 
@@ -34,7 +35,8 @@ public abstract class PlayPage {
 
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject item = jsonItems.getJSONObject(i);
-            items.add(getPlayItem(item));
+            PlayItem playItem = getPlayItem(item);
+            items.add(playItem);
         }
     }
 

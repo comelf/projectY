@@ -1,8 +1,10 @@
 package com.projecty.ddotybox.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -52,6 +54,8 @@ public class VideoFragment extends Fragment {
     private ImageView[] dots;
     private List<AsyncTask> asyncTasks = new ArrayList<AsyncTask>();
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class VideoFragment extends Fragment {
             @Override
             public View getView(final int position, ViewPager pager) {
                 Context c = pager.getContext();
+                
                 LayoutInflater vi = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View v = vi.inflate(R.layout.top_contents, null, false);
                 if(rVideolist==null){
@@ -162,6 +167,7 @@ public class VideoFragment extends Fragment {
 
             // start loading the first page of our playlist
         AsyncTask asyncOne = new GetVideolistAsyncTask() {
+
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -169,13 +175,33 @@ public class VideoFragment extends Fragment {
 
             @Override
             public void onPostExecute(JSONObject result) {
+                
                 handlePlaylistResult(result);
+
             }
         }.execute(Global.YOUTUBE_PLAYLIST, null);
         asyncTasks.add(asyncOne);
         AsyncTask asyncTwo = new GetHomeCoverlistAsyncTask() {
+                ProgressDialog dialog;
+
+                @Override
+                protected void onPreExecute() {
+                    dialog = new ProgressDialog(getActivity());
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("잠시만 기다려주세요...");
+                    dialog.setIndeterminate(true);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+
+                    super.onPreExecute();
+
+                }
+            
+            
                 @Override
                 public void onPostExecute(JSONObject result) {
+
+                    dialog.dismiss();
                     handleRecommendlistResult(result);
                 }
                 @Override
@@ -362,6 +388,11 @@ public class VideoFragment extends Fragment {
 
             Typeface custom_font = Typeface.createFromAsset(convertView.getContext().getAssets(), "NotoSans.otf");
             viewHolder.title.setTypeface(custom_font);
+            viewHolder.thumbnail.setImageURI(Uri.parse(item.thumbnailUrl));
+
+
+//            viewHolder.thumbnail.setImageDrawable(Drawable.createFromPath(item.thumbnailUrl));
+
             Picasso.with(getActivity())
                     .load(item.thumbnailUrl)
                     .into(viewHolder.thumbnail);

@@ -79,7 +79,7 @@ public class SearchResultFragment extends Fragment {
             public void onPostExecute(JSONObject result) {
                 handlePlaylistResult(result);
             }
-        }.execute(Global.YOUTUBE_PLAYLIST, query);
+        }.execute(Global.YOUTUBE_PLAYLIST, query, null);
         asyncTasks.add(async);
 
         return rootView;
@@ -123,27 +123,23 @@ public class SearchResultFragment extends Fragment {
 
     private void handlePlaylistResult(JSONObject result) {
         try {
-            if(result ==null){
-                return;
-            }
-
-            if (mVideolist == null) {
+            if(mVideolist ==null){
                 mVideolist = new SearchVideolist(result);
                 initListAdapter(mVideolist);
-            }
-            else {
+            }else {
                 mVideolist.addPage(result);
-                if (!mAdapter.setIsLoading(false)) {
-                    mAdapter.notifyDataSetChanged();
-                }
             }
-
-
+            
+            if (!mAdapter.setIsLoading(false)) {
+                mAdapter.notifyDataSetChanged();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        
+        
     }
 
     protected class PlaylistAdapter extends BaseAdapter {
@@ -239,22 +235,22 @@ public class SearchResultFragment extends Fragment {
                 }
             });
 
-//            final String nextPageToken = mVideolist.getNextPageToken(position);
-//            if (!isEmpty(nextPageToken) && position == getCount() - 1) {
-//                AsyncTask async = new GetSearchlistAsyncTask() {
-//                    @Override
-//                    public EtagCache getEtagCache() {
-//                        return mEtagCache;
-//                    }
-//
-//                    @Override
-//                    public void onPostExecute(JSONObject result) {
-//                        handlePlaylistResult(result);
-//                    }
-//                }.execute(Global.YOUTUBE_PLAYLIST, query, nextPageToken);
-//                asyncTasks.add(async);
-//                setIsLoading(true);
-//            }
+            final String nextPageToken = mVideolist.getNextPageToken(position);
+            if (!isEmpty(nextPageToken) && position == getCount() - 1) {
+                AsyncTask async = new GetSearchlistAsyncTask() {
+                    @Override
+                    public EtagCache getEtagCache() {
+                        return mEtagCache;
+                    }
+
+                    @Override
+                    public void onPostExecute(JSONObject result) {
+                        handlePlaylistResult(result);
+                    }
+                }.execute(Global.YOUTUBE_PLAYLIST, query, nextPageToken);
+                asyncTasks.add(async);
+                setIsLoading(true);
+            }
 
             return convertView;
         }

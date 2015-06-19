@@ -25,6 +25,7 @@ public class PlaylistOri extends PlayList {
                 jsonPlaylist.optString("nextPageToken", null)) {
             @Override
             protected PlayItem getPlayItem(JSONObject item) throws JSONException, ParseException {
+                
                 return new PlaylistItem(item);
             }
         });

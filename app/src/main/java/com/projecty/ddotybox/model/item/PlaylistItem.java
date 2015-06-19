@@ -30,7 +30,6 @@ public class PlaylistItem extends PlayItem {
         date = snippet.getString("publishedAt").substring(0, 10);
         thumbnailUrl = snippet.getJSONObject("thumbnails").getJSONObject("medium").getString("url");
         videoCount = String.valueOf(jsonItem.getJSONObject("contentDetails").getInt("itemCount"));
-
     }
 
 }

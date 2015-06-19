@@ -19,9 +19,18 @@ import java.io.InputStreamReader;
 
 public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private static final String TAG = "GetYouTubelistAsyncTask";
+
+    private static final int YOUTUBE_PLAYLIST_MAX_RESULTS = 10;
     private static final String URL_BASE = "https://www.googleapis.com/youtube/v3/search";
+    private static final String YOUTUBE_PLAYLIST_FIELDS = "nextPageToken";
+    private static final String YOUTUBE_PLAYLIST_PART = "snippet";
 
     String query;
+    String nextPageToken;
+
+    public GetSearchlistAsyncTask() {
+        mUriBuilder = Uri.parse(URL_BASE).buildUpon();
+    }
 
     @Override
     protected JSONObject doInBackground(String... params) {
@@ -30,24 +39,20 @@ public abstract class GetSearchlistAsyncTask extends AsyncTask<String, Void, JSO
             return null;
         }
 
-        if (params.length == 2 ) {
-            query = params[1].trim();
-            if(query.isEmpty()){
-                return null;
-            }
+
+        query = params[1].trim();
+        final String nextPageToken = params[2];
+        if(query.isEmpty()){
+            return null;
+        }
+        if (nextPageToken != null) {
+            mUriBuilder.appendQueryParameter("pageToken", nextPageToken);
         }
 
-//        if (params.length == 3) {
-//            final String nextPageToken = params[2];
-//            if (nextPageToken != null) {
-//                mUriBuilder.appendQueryParameter("pageToken", nextPageToken);
-//            }
-//        }
-
-        mUriBuilder = Uri.parse(URL_BASE).buildUpon();
-        mUriBuilder.appendQueryParameter("part", "snippet")
+        mUriBuilder.appendQueryParameter("part", YOUTUBE_PLAYLIST_PART)
                 .appendQueryParameter("q", query)
                 .appendQueryParameter("channelId", Global.CHANNEL_ID)
+                .appendQueryParameter("maxResults", Integer.toString(YOUTUBE_PLAYLIST_MAX_RESULTS))
                 .appendQueryParameter("type", "video")
                 .appendQueryParameter("key", Global.YOUTUBE_API_KEY);
 

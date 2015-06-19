@@ -1,11 +1,14 @@
 package com.projecty.ddotybox.task;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.github.kevinsawicki.etag.CacheRequest;
 import com.github.kevinsawicki.etag.EtagCache;
+import com.projecty.ddotybox.fragment.VideoFragment;
 import com.projecty.ddotybox.util.Global;
 
 import org.json.JSONArray;
@@ -31,6 +34,9 @@ public abstract class GetVideolistAsyncTask extends AsyncTask<String, Void, JSON
 
         mUriBuilder = Uri.parse(YOUTUBE_PLAYLISTITEMS_URL).buildUpon();
     }
+    private ProgressDialog pdia;
+
+
 
     @Override
     protected JSONObject doInBackground(String... params) {

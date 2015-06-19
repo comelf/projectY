@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,6 +156,8 @@ public class BjLogFragment extends Fragment {
             SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             viewHolder.date.setText(transFormat.format(log.date));
             viewHolder.content.setTypeface(custom_font);
+            Linkify.addLinks(viewHolder.content, Linkify.WEB_URLS);
+            
             viewHolder.date.setTypeface(custom_font);
             String imgPath = "http://52.68.56.175"+log.img_path;
             Picasso.with(getActivity())

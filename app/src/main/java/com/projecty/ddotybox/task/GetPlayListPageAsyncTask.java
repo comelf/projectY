@@ -61,11 +61,12 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
             jsonObject = new JSONObject(result);
             JSONArray itemList = jsonObject.getJSONArray("items");
             String items = "";
+            
             for (int i = 0; i < itemList.length() ; i++) {
                 String id = itemList.getJSONObject(i).getJSONObject("snippet").getJSONObject("resourceId").getString("videoId");
                 items = items + id + ",";
-//                Log.i(TAG, id);
             }
+
             String api = "https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails,snippet&id=" + items + "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
             Uri.Builder uriBuilder = Uri.parse(api).buildUpon();
             String result2 = doGetUrl(uriBuilder.build().toString());
@@ -74,15 +75,18 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
             for (int i = 0; i < itemList.length() ; i++) {
                 JSONObject item = itemInfo.getJSONArray("items").getJSONObject(i);
                 JSONObject snippet = itemList.getJSONObject(i).getJSONObject("snippet");
+                String title = itemList.getJSONObject(i).getJSONObject("snippet").getString("title");
 
-                String duration = item.getJSONObject("contentDetails").getString("duration");
-                String viewCount = String.valueOf(item.getJSONObject("statistics").getLong("viewCount"));
-                String likeCount = String.valueOf(item.getJSONObject("statistics").getLong("likeCount"));
-                String description = item.getJSONObject("snippet").getString("description");
-                snippet.put("duration",duration);
-                snippet.put("viewCount", viewCount);
-                snippet.put("likeCount", likeCount);
-                snippet.put("description",description);
+                if (title != "Private video") {
+                    String duration = item.getJSONObject("contentDetails").getString("duration");
+                    String viewCount = String.valueOf(item.getJSONObject("statistics").getLong("viewCount"));
+                    String likeCount = String.valueOf(item.getJSONObject("statistics").getLong("likeCount"));
+                    String description = item.getJSONObject("snippet").getString("description");
+                    snippet.put("duration", duration);
+                    snippet.put("viewCount", viewCount);
+                    snippet.put("likeCount", likeCount);
+                    snippet.put("description", description);
+                }
             }
 
 
@@ -94,6 +98,7 @@ public abstract class GetPlayListPageAsyncTask extends AsyncTask<String, Void, J
 
         return jsonObject;
     }
+    
 
     protected Uri.Builder mUriBuilder;
 
