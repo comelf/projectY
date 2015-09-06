@@ -18,6 +18,9 @@
     <color name="theme_color2">#ED5565</color>
     <color name="theme_point">#48CFAD</color>
     <color name="theme_button">#48cfad</color>
+    <color name="tabsScrollColor">#8a140e</color>
+    <color name="ColorPrimary">#e62117</color>
+    <color name="ColorPrimaryDark">#c31c13</color>
 
 
 

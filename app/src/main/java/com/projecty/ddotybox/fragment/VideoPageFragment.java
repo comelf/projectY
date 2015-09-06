@@ -1,3 +1,10 @@
+/*
+목적: 비디오 개별 상세 화면 
+동작
+    - 즐겨찾기, 재생
+*/
+
+
 package com.projecty.ddotybox.fragment;
 
 import android.app.Activity;
@@ -73,6 +80,9 @@ public class VideoPageFragment extends Fragment implements View.OnClickListener{
 
         userId = UserProfile.getStaticUserId();
 
+        
+        
+        //유저가 이 영상을 즐겨찾기했는지 확인
         AdView mAdView = (AdView) view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);

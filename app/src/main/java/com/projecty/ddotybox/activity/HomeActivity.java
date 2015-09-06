@@ -1,3 +1,11 @@
+/*
+목적: 메인 화면
+동작
+    - 메인 화면 보여주기
+    - 액션바 세팅
+    - 우측 상단 네비게이션 세팅
+*/
+
 package com.projecty.ddotybox.activity;
 
 import android.app.AlertDialog;
@@ -35,26 +43,13 @@ import com.projecty.ddotybox.fragment.SandboxNetworkFragment;
 import com.projecty.ddotybox.fragment.SearchFragment;
 import com.projecty.ddotybox.fragment.SearchResultFragment;
 import com.projecty.ddotybox.fragment.SettingFragment;
+import com.projecty.ddotybox.fragment.StoreFragment;
 import com.projecty.ddotybox.fragment.VideoFragment;
 import com.projecty.ddotybox.model.UserProfile;
 import com.projecty.ddotybox.util.Global;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 public class HomeActivity extends ActionBarActivity implements View.OnClickListener{
 
     private static final int HOME_LAYOUT = 0;
@@ -70,6 +65,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private static final int BJ5_LAYOUT = 10;
     private static final int BJ6_LAYOUT = 11;
     private static final int BJ7_LAYOUT = 12;
+    private static final int STORE_LAYOUT = 13;
+    
+    
     private static final String SET = "set";
     private static final String HOME = "home";
     private static final String PLAYLIST = "playlist";
@@ -84,6 +82,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private static final String BJ5 = "bj5";
     private static final String BJ6 = "bj6";
     private static final String BJ7 = "bj7";
+    private static final String STORE = "mycube";
 
     private AdlibManager _amanager;
 
@@ -100,6 +99,14 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     public UserProfile user;
 
 
+    /*
+    이름: onBackPressed()
+    목적: 뒤로가기 버튼
+    동작
+        - 클릭마다 스택으로 fragment를 쌓음
+        - fragment가 <= 1일(메인화면) 때 종료 여부 물어보기  
+     */
+    
     @Override
     public void onBackPressed() {
         int num = getSupportFragmentManager().getBackStackEntryCount();
@@ -148,6 +155,13 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
     
+    /*
+    이름: checkBackStack()
+    목적: 스택에 쌓을 때 main, 검색외엔 쌓지 않게 하기 위해. 뒤로가기 하면 무조건 main으로
+    동작
+        - main 화면을 제외하고는 모두 스택에 쌓지 않음
+     */
+    
     private void checkBackStack(){
         int num = getSupportFragmentManager().getBackStackEntryCount();
         while (num >=2){
@@ -179,6 +193,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         setUserProfile();
 
 
+
+
+        // 애드립 광고
         // 각 애드립 액티비티에 애드립 앱 키값을 필수로 넣어주어야 합니다.
         _amanager = new AdlibManager(ADLIB_API_KEY);
         _amanager.onCreate(this);
@@ -326,6 +343,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         buttons.add((Button) findViewById(R.id.featuredButton));
         buttons.add((Button) findViewById(R.id.bjlogButton));
         buttons.add((Button) findViewById(R.id.communityButton));
+        buttons.add((Button) findViewById(R.id.mycubeButton));
         buttons.add((Button) findViewById(R.id.playlistButton));
         buttons.add((Button) findViewById(R.id.bj1));
         buttons.add((Button) findViewById(R.id.bj2));
@@ -342,7 +360,14 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    
+    /*
+    이름: onClick()
+    목적: 클릭에 따른 화면 이동
+    
+     */
 
+    
     @Override
     public void onClick(View v) {
 
@@ -430,8 +455,19 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new CommunityFragment(), tag).addToBackStack(tag)
                         .commit();
-
                 break;
+
+            case R.id.mycubeButton:
+                tag=STORE;
+                toolbar.setTitle("샌드박스 스토어");
+                setLayoutBackgroundColor(STORE_LAYOUT);
+
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new StoreFragment(), tag).commit();
+                break;
+            
+            
             case R.id.bj1:
                 toolbar.setTitle("잠뜰 BOX");
                 tag=BJ1;
@@ -543,6 +579,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         layoutList.add((FrameLayout) findViewById(R.id.featured_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bjlog_layout));
         layoutList.add((FrameLayout) findViewById(R.id.community_layout));
+        layoutList.add((FrameLayout) findViewById(R.id.mycube_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bj1_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bj2_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bj3_layout));
@@ -550,7 +587,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         layoutList.add((FrameLayout) findViewById(R.id.bj5_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bj6_layout));
         layoutList.add((FrameLayout) findViewById(R.id.bj7_layout));
-
     }
 
     /*
@@ -593,8 +629,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case COMMUNITY:
                 toolbar.setTitle("커뮤니티");
                 setLayoutBackgroundColor(COMMUNITY_LAYOUT);
-
                 break;
+            case STORE:
+                toolbar.setTitle("샌드박스 스토어");
+                setLayoutBackgroundColor(STORE_LAYOUT);
+                break;
+            
             case BJ1:
                 toolbar.setTitle("잠뜰 BOX");
                 setLayoutBackgroundColor(BJ1_LAYOUT);

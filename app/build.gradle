@@ -27,4 +27,5 @@ dependencies {
     compile 'com.github.kevinsawicki:etag-cache:0.6'
     compile 'com.google.android.gms:play-services:7.0.0'
     compile files('adlibr.4.2.1.2.jar')
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

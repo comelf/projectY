@@ -1,3 +1,10 @@
+
+/*
+목적: 첫 화면이 뜨는 곳 (구글 로그인)
+동작
+    - connected 되어 있다면 바로 로그인
+    - connected 되어 있지않다면 로그인 버튼을 통해 google 정보 가져오기
+*/
 package com.projecty.ddotybox.activity;
 
 import android.app.Activity;
@@ -28,7 +35,6 @@ public class GoogleLogin extends Activity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
     private static final int RC_SIGN_IN = 0;
-    // Logcat tag
     private static final String TAG = "GoogleLogin";
     StrictMode.ThreadPolicy policy
             = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -57,6 +63,11 @@ public class GoogleLogin extends Activity implements OnClickListener,
 
     }
 
+    /*
+    이름: onStart()
+    목적: 시작과 동시에 실행되어 google API connect
+     */
+    
     protected void onStart() {
         super.onStart();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -77,9 +88,10 @@ public class GoogleLogin extends Activity implements OnClickListener,
 
 
 
-    /**
-     * Method to resolve any signin errors
-     * */
+    /*
+    이름: onStart()
+    목적: connect error 처리
+     */
     private void resolveSignInError() {
         if (mConnectionResult.hasResolution()) {
             try {
@@ -141,9 +153,10 @@ public class GoogleLogin extends Activity implements OnClickListener,
 
     }
 
-    /**
-     * Fetching user's information name, email, profile pic
-     * */
+    /*
+    이름: getProfileInformation()
+    목적: 유저가 구글 정보 접근을 허락했을 경우 그 정보를 가져와 로그인
+     */
     private void getProfileInformation() {
         try {
 
@@ -156,11 +169,15 @@ public class GoogleLogin extends Activity implements OnClickListener,
                 String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
+                
+                //유저 객체 생성
                 UserProfile user = UserProfile.getUser();
                 user.setUserName(personName);
                 user.setUserPhotoUrl(personPhotoUrl);
                 user.setUserGooglePlusProfile(personGooglePlusProfile);
                 user.setUserEmail(email);
+                
+                //서버로 정보 전송: 가입이 되었다면 유저 id만 return, 가입이 되어있지 않다면 가입 후 id return
                 user.login();
 
             } else {

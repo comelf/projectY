@@ -1,3 +1,11 @@
+/*
+목적: 메인 화면
+동작
+    - 커버 5개 비디오 보여주기
+    - 영상 리스트 보여주기
+*/
+
+
 package com.projecty.ddotybox.fragment;
 
 import android.app.Activity;
@@ -213,6 +221,11 @@ public class VideoFragment extends Fragment {
         return rootView;
     }
 
+    /*
+    이름: moveFragement()
+    목적: 클릭한 비디오의 상세정보 보기 (이동)
+     */
+    
     private void moveFragement(int position) {
 
         DetailPageFragment fr = new DetailPageFragment();
@@ -231,6 +244,11 @@ public class VideoFragment extends Fragment {
         return rVideolist.getItem(position);
     }
 
+
+    /*
+    이름: handleRecommendlistResult()
+    목적: asyncTask로 가지고 온 커버 5개 비디오 리스트 변수에 담기
+    */
     private void handleRecommendlistResult(JSONObject result) {
         try {
             if(result==null){
@@ -280,6 +298,11 @@ public class VideoFragment extends Fragment {
         mListView.setAdapter(mAdapter);
     }
 
+
+    /*
+    이름: handleRecommendlistResult()
+    목적: asyncTask로 가지고 온 비디오리스트 변수에 담기
+    */
     private void handlePlaylistResult(JSONObject result) {
         try {
             if (mHomeVideolist == null) {

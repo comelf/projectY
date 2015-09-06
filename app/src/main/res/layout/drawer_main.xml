@@ -289,6 +289,27 @@
                             android:src="@drawable/ic_community"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/mycube_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <Button
+                            android:id="@+id/mycubeButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/drawerButtonHeight"
+                            android:paddingLeft="@dimen/drawerButtonLeftpadding"
+                            android:text="샌드박스 스토어"
+                            android:gravity="left|center_vertical"
+                            android:background="@android:color/transparent"/>
+                        <ImageView
+                            android:layout_width="@dimen/drawerMidButtonSize"
+                            android:layout_height="@dimen/drawerMidButtonSize"
+                            android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_cube"
+                            android:layout_gravity="left|center_vertical"/>
+                    </FrameLayout>
+                    
                 </LinearLayout>
                 <TextView
                     android:layout_width="match_parent"
@@ -317,7 +338,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
@@ -337,7 +358,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
@@ -357,7 +378,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
@@ -377,7 +398,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
@@ -397,7 +418,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
@@ -417,7 +438,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
@@ -437,7 +458,7 @@
                             android:layout_height="@dimen/drawerMidButtonSize"
                             android:layout_marginLeft="@dimen/drawerButtonLeftmargin"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_box"
+                            android:src="@drawable/ic_sb"
                             android:layout_gravity="left|center_vertical"/>
                     </FrameLayout>
                     <FrameLayout
